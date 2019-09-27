@@ -58,6 +58,56 @@ namespace MvcMovie.Migrations
 
                     b.ToTable("EventCenter");
                 });
+
+            modelBuilder.Entity("MvcMovie.Models.Speaker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Birthdate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("Genre");
+
+                    b.Property<string>("Lastname");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("University");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Speaker");
+                });
+
+            modelBuilder.Entity("MvcMovie.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Birthdate");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("Genre");
+
+                    b.Property<string>("Lastname");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Phone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
 #pragma warning restore 612, 618
         }
     }

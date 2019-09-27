@@ -17,5 +17,9 @@ namespace MvcMovie.Models
         public DbSet<MvcMovie.Models.Conference> Conference { get; set; }
 
         public DbSet<MvcMovie.Models.EventCenter> EventCenter { get; set; }
+
+        public DbSet<MvcMovie.Models.User> User { get; set; }
+
+        public DbSet<MvcMovie.Models.Speaker> Speaker { get; set; }
     }
 }
