@@ -30,5 +30,7 @@ namespace MvcMovie.Models
         public DbSet<MvcMovie.Models.Chat> Chat { get; set; }
 
         public DbSet<MvcMovie.Models.Talk> Talk { get; set; }
+
+        public DbSet<MvcMovie.Models.Sponsor> Sponsor { get; set; }
     }
 }
