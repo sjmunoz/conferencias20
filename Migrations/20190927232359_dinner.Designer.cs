@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcMovie.Models;
 
 namespace MvcMovie.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    partial class MvcMovieContextModelSnapshot : ModelSnapshot
+    [Migration("20190927232359_dinner")]
+    partial class dinner
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,33 +182,6 @@ namespace MvcMovie.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MvcMovie.Models.Chat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ConferenceId");
-
-                    b.Property<DateTime>("EndEventDate");
-
-                    b.Property<DateTime>("EventDate");
-
-                    b.Property<int>("ModeratorId");
-
-                    b.Property<int>("PersonId");
-
-                    b.Property<int>("RoomID");
-
-                    b.Property<string>("Topic");
-
-                    b.Property<string>("Track");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Chat");
-                });
-
             modelBuilder.Entity("MvcMovie.Models.Conference", b =>
                 {
                     b.Property<int>("Id")
@@ -322,33 +297,6 @@ namespace MvcMovie.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Speaker");
-                });
-
-            modelBuilder.Entity("MvcMovie.Models.Talk", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ConferenceId");
-
-                    b.Property<DateTime>("EndEventDate");
-
-                    b.Property<DateTime>("EventDate");
-
-                    b.Property<int>("PersonId");
-
-                    b.Property<string>("Resources");
-
-                    b.Property<int>("RoomID");
-
-                    b.Property<int>("TalkerId");
-
-                    b.Property<string>("Track");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Talk");
                 });
 
             modelBuilder.Entity("MvcMovie.Models.User", b =>

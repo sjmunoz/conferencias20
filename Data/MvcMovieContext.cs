@@ -22,5 +22,13 @@ namespace MvcMovie.Models
         public DbSet<MvcMovie.Models.User> User { get; set; }
 
         public DbSet<MvcMovie.Models.Speaker> Speaker { get; set; }
+
+        public DbSet<MvcMovie.Models.Party> Party { get; set; }
+
+        public DbSet<MvcMovie.Models.Dinner> Dinner { get; set; }
+
+        public DbSet<MvcMovie.Models.Chat> Chat { get; set; }
+
+        public DbSet<MvcMovie.Models.Talk> Talk { get; set; }
     }
 }
