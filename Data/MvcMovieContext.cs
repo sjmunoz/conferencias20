@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MvcMovie.Models
 {
-    public class MvcMovieContext : DbContext
+    public class MvcMovieContext : IdentityDbContext
     {
         public MvcMovieContext (DbContextOptions<MvcMovieContext> options)
             : base(options)

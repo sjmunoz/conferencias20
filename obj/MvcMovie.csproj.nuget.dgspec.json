@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Sebastian\\source\\repos\\conferencias20\\MvcMovie.csproj": {}
+    "C:\\Users\\Gian\\Desktop\\conferencias20\\MvcMovie.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Sebastian\\source\\repos\\conferencias20\\MvcMovie.csproj": {
+    "C:\\Users\\Gian\\Desktop\\conferencias20\\MvcMovie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Sebastian\\source\\repos\\conferencias20\\MvcMovie.csproj",
+        "projectUniqueName": "C:\\Users\\Gian\\Desktop\\conferencias20\\MvcMovie.csproj",
         "projectName": "MvcMovie",
-        "projectPath": "C:\\Users\\Sebastian\\source\\repos\\conferencias20\\MvcMovie.csproj",
-        "packagesPath": "C:\\Users\\Sebastian\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Sebastian\\source\\repos\\conferencias20\\obj\\",
+        "projectPath": "C:\\Users\\Gian\\Desktop\\conferencias20\\MvcMovie.csproj",
+        "packagesPath": "C:\\Users\\Gian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Gian\\Desktop\\conferencias20\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Sebastian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Gian\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -64,10 +64,16 @@
             }
           },
           "imports": [
-            "net461"
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
           ],
           "assetTargetFallback": true,
-          "warn": true
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
