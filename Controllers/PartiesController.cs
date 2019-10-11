@@ -21,7 +21,8 @@ namespace MvcMovie.Controllers
         // GET: Parties
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Party.ToListAsync());
+            var mvcMovieContext = _context.Party.Include(p => p.Room);
+            return View(await mvcMovieContext.ToListAsync());
         }
 
         // GET: Parties/Details/5
@@ -33,6 +34,7 @@ namespace MvcMovie.Controllers
             }
 
             var party = await _context.Party
+                .Include(p => p.Room)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (party == null)
             {
@@ -45,6 +47,7 @@ namespace MvcMovie.Controllers
         // GET: Parties/Create
         public IActionResult Create()
         {
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id");
             return View();
         }
 
@@ -61,6 +64,7 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", party.RoomID);
             return View(party);
         }
 
@@ -77,6 +81,7 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", party.RoomID);
             return View(party);
         }
 
@@ -112,6 +117,7 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", party.RoomID);
             return View(party);
         }
 
@@ -124,6 +130,7 @@ namespace MvcMovie.Controllers
             }
 
             var party = await _context.Party
+                .Include(p => p.Room)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (party == null)
             {

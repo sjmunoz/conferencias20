@@ -9,62 +9,86 @@ using MvcMovie.Models;
 
 namespace MvcMovie.Controllers
 {
-    public class SponsorsController : Controller
+    public class RoomsController : Controller
     {
         private readonly MvcMovieContext _context;
 
-        public SponsorsController(MvcMovieContext context)
+        public RoomsController(MvcMovieContext context)
         {
             _context = context;
         }
 
-        // GET: Sponsors
+        // GET: Rooms
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sponsor.ToListAsync());
+            return View(await _context.Room.ToListAsync());
         }
 
-        // GET: Sponsors/Details/5
+        // GET: Rooms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var sponsor = await _context.Sponsor
+            var room = await _context.Room
+                .Include(b => b.Parties)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (sponsor == null)
+            if (room == null)
             {
                 return NotFound();
             }
 
-            return View(sponsor);
+            return View(room);
         }
 
-        // GET: Sponsors/Create
+        // GET: AddParty/Create
+        public IActionResult AddParty()
+        {
+            return View();
+        }
+
+        // POST: AddParty/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddParty(int RoomId, [Bind("RoomID,ConferenceId,PersonId,EventDate,EndEventDate,Track")] Party party)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(party);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(party);
+        }
+
+
+
+        // GET: Rooms/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sponsors/Create
+        // POST: Rooms/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Sponsor sponsor)
+        public async Task<IActionResult> Create([Bind("Id,Capacity,Location")] Room room)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sponsor);
+                _context.Add(room);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(sponsor);
+            return View(room);
         }
 
-        // GET: Sponsors/Edit/5
+        // GET: Rooms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +96,22 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
-            var sponsor = await _context.Sponsor.FindAsync(id);
-            if (sponsor == null)
+            var room = await _context.Room.FindAsync(id);
+            if (room == null)
             {
                 return NotFound();
             }
-            return View(sponsor);
+            return View(room);
         }
 
-        // POST: Sponsors/Edit/5
+        // POST: Rooms/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Sponsor sponsor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Capacity,Location")] Room room)
         {
-            if (id != sponsor.Id)
+            if (id != room.Id)
             {
                 return NotFound();
             }
@@ -96,12 +120,12 @@ namespace MvcMovie.Controllers
             {
                 try
                 {
-                    _context.Update(sponsor);
+                    _context.Update(room);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SponsorExists(sponsor.Id))
+                    if (!RoomExists(room.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +136,10 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sponsor);
+            return View(room);
         }
 
-        // GET: Sponsors/Delete/5
+        // GET: Rooms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +147,30 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
-            var sponsor = await _context.Sponsor
+            var room = await _context.Room
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (sponsor == null)
+            if (room == null)
             {
                 return NotFound();
             }
 
-            return View(sponsor);
+            return View(room);
         }
 
-        // POST: Sponsors/Delete/5
+        // POST: Rooms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sponsor = await _context.Sponsor.FindAsync(id);
-            _context.Sponsor.Remove(sponsor);
+            var room = await _context.Room.FindAsync(id);
+            _context.Room.Remove(room);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SponsorExists(int id)
+        private bool RoomExists(int id)
         {
-            return _context.Sponsor.Any(e => e.Id == id);
+            return _context.Room.Any(e => e.Id == id);
         }
     }
 }

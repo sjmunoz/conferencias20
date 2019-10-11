@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcMovie.Models;
 
 namespace MvcMovie.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    partial class MvcMovieContextModelSnapshot : ModelSnapshot
+    [Migration("20191008011940_first_has_many")]
+    partial class first_has_many
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,24 +296,7 @@ namespace MvcMovie.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoomID");
-
                     b.ToTable("Party");
-                });
-
-            modelBuilder.Entity("MvcMovie.Models.Room", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Capacity");
-
-                    b.Property<string>("Location");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Room");
                 });
 
             modelBuilder.Entity("MvcMovie.Models.Speaker", b =>
@@ -450,14 +435,6 @@ namespace MvcMovie.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MvcMovie.Models.Party", b =>
-                {
-                    b.HasOne("MvcMovie.Models.Room", "Room")
-                        .WithMany("Parties")
-                        .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

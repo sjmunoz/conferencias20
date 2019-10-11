@@ -4,7 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="container3">
 <h1>Index</h1>
 
 <p>
@@ -14,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.RoomID)
+                @Html.DisplayNameFor(model => model.Room)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ConferenceId)
@@ -38,7 +37,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.RoomID)
+                @Html.DisplayFor(modelItem => item.Room.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ConferenceId)
@@ -64,4 +63,3 @@
 }
     </tbody>
 </table>
-</div>
