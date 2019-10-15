@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace MvcMovie.Models
 {
-    public class Sponsor
+    public class Room
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int ConferenceId { get; set; }
-        public virtual Conference Conference { get; set; }
-
+        public int Capacity { get; set; }
+        public string Location { get; set; }
+        public virtual ICollection<Party> Parties { get; set; }
     }
 }

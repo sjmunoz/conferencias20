@@ -21,7 +21,8 @@ namespace MvcMovie.Controllers
         // GET: Sponsors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sponsor.ToListAsync());
+            var mvcMovieContext = _context.Sponsor.Include(s => s.Conference);
+            return View(await mvcMovieContext.ToListAsync());
         }
 
         // GET: Sponsors/Details/5
@@ -33,6 +34,7 @@ namespace MvcMovie.Controllers
             }
 
             var sponsor = await _context.Sponsor
+                .Include(s => s.Conference)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (sponsor == null)
             {
@@ -45,6 +47,7 @@ namespace MvcMovie.Controllers
         // GET: Sponsors/Create
         public IActionResult Create()
         {
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id");
             return View();
         }
 
@@ -53,7 +56,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Sponsor sponsor)
+        public async Task<IActionResult> Create([Bind("Id,Name,ConferenceId")] Sponsor sponsor)
         {
             if (ModelState.IsValid)
             {
@@ -61,6 +64,7 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", sponsor.ConferenceId);
             return View(sponsor);
         }
 
@@ -77,6 +81,7 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", sponsor.ConferenceId);
             return View(sponsor);
         }
 
@@ -85,7 +90,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Sponsor sponsor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ConferenceId")] Sponsor sponsor)
         {
             if (id != sponsor.Id)
             {
@@ -112,6 +117,7 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", sponsor.ConferenceId);
             return View(sponsor);
         }
 
@@ -124,6 +130,7 @@ namespace MvcMovie.Controllers
             }
 
             var sponsor = await _context.Sponsor
+                .Include(s => s.Conference)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (sponsor == null)
             {

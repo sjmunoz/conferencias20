@@ -17,6 +17,7 @@ namespace MvcMovie.Models
 
         public DbSet<MvcMovie.Models.Conference> Conference { get; set; }
 
+
         public DbSet<MvcMovie.Models.EventCenter> EventCenter { get; set; }
 
         public DbSet<MvcMovie.Models.User> User { get; set; }
@@ -32,5 +33,8 @@ namespace MvcMovie.Models
         public DbSet<MvcMovie.Models.Talk> Talk { get; set; }
 
         public DbSet<MvcMovie.Models.Sponsor> Sponsor { get; set; }
+
+        public DbSet<MvcMovie.Models.Room> Room { get; set; }
+
     }
 }

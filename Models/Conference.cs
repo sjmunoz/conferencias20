@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace MvcMovie.Models
 {
@@ -12,5 +14,7 @@ namespace MvcMovie.Models
         public DateTime ReleaseDate { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
+
+        public virtual ICollection<Sponsor> Sponsors { get; set; }
     }
 }
