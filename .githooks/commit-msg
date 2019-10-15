@@ -1,0 +1,11 @@
+#!/bin/sh
+
+commit_regex='^(feat|fix|test|docs|style|hotfix|refactor|merge)\(.+'
+error_msg="******  Revisa la guía de convenciones del grupo: https://github.com/Mahund/G14_DDS/wiki/Convenciones"
+
+if ! grep -iqE "$commit_regex" "$1"; then
+    echo "$error_msg" >&2
+    exit 1
+fi
+
+exit 0
