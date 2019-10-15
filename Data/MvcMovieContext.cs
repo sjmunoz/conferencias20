@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MvcMovie.Models
 {
-    public class MvcMovieContext : IdentityDbContext
+    public class MvcMovieContext : IdentityDbContext<ApplicationUser>
     {
         public MvcMovieContext (DbContextOptions<MvcMovieContext> options)
             : base(options)
