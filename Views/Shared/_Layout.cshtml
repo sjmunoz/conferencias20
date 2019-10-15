@@ -75,27 +75,29 @@
                     <!-- <li class="nav-item cta mr-md-2"><a href="/account/register" class="nav-link">Register</a></li> -->
 
                     @if (signInManager.IsSignedIn(User))
-                        {
-                            <li class="nav-item">
-                                <form method="post" asp-action="Logout" asp-controller="Account">
-                                    <button type="submit">
-                                        Logout @User.Identity.Name
-                                    </button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                        }
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-action="Logout" asp-controller="Account">
+                                <button type="submit">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                    }
 
                 </ul>
-</head>
+            </div>
+        </div>
+    </nav>
 
     <div class="container2">
         <partial name="_CookieConsentPartial" />

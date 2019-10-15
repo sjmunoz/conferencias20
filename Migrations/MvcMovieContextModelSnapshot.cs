@@ -154,6 +154,8 @@ namespace MvcMovie.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Chat");
+                });
+
             modelBuilder.Entity("MvcMovie.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
