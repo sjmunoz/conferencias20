@@ -10,5 +10,6 @@ namespace MvcMovie.Models
         public string Topic { get; set; }
         public int ModeratorId { get; set; }
         public virtual Room Room { get; set; }
+        public virtual Conference Conference { get; set; }
     }
 }

@@ -33,6 +33,10 @@ namespace MvcMovie.Controllers
             }
 
             var conference = await _context.Conference
+                .Include(b => b.Parties)
+                .Include(b => b.Talks)
+                .Include(b => b.Chats)
+                .Include(b => b.Dinners)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (conference == null)
             {
