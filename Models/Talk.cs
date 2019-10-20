@@ -9,5 +9,6 @@ namespace MvcMovie.Models
     {
         public string Resources { get; set; }
         public int TalkerId { get; set; }
+        public virtual Room Room { get; set; }
     }
 }
