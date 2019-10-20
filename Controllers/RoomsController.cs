@@ -33,6 +33,9 @@ namespace MvcMovie.Controllers
             }
             var room = await _context.Room
                 .Include(b => b.Parties)
+                .Include(b => b.Dinners)
+                .Include(b => b.Talks)
+                .Include(b => b.Chats)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (room == null)
             {

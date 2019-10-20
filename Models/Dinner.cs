@@ -9,5 +9,6 @@ namespace MvcMovie.Models
     {
         public string Location { get; set; }
         public string Menu { get; set; }
+        public virtual Room Room { get; set; }
     }
 }
