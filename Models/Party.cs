@@ -8,5 +8,6 @@ namespace MvcMovie.Models
     public class Party : Event
     {
         public virtual Room Room { get; set; }
+        public virtual Conference Conference { get; set; }
     }
 }
