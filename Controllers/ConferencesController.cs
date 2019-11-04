@@ -35,6 +35,7 @@ namespace MvcMovie.Controllers
 
             var conference = await _context.Conference
                 .Include(c => c.EventCenter)
+                .Include(c => c.Repetitions)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (conference == null)
             {
@@ -42,6 +43,31 @@ namespace MvcMovie.Controllers
             }
 
             return View(conference);
+        }
+
+        // GET: AddRepetition/Create
+        public IActionResult AddRepetition(int id)
+        {
+            ViewData["ConferenceId"] = id;
+            return View();
+        }
+
+        // POST: AddRepetition/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRepetition(int id, [Bind("Day, Month, Year")] Repetition repetition)
+        {
+
+            repetition.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(repetition);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(repetition);
         }
 
         // GET: Conferences/Create

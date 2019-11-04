@@ -32,5 +32,7 @@ namespace MvcMovie.Models
 
         public DbSet<MvcMovie.Models.Room> Room { get; set; }
 
+        public DbSet<MvcMovie.Models.Repetition> Repetition { get; set; }
+
     }
 }
