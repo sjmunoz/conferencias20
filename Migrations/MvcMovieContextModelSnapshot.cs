@@ -233,7 +233,11 @@ namespace MvcMovie.Migrations
 
                     b.Property<DateTime>("ReleaseDate");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Conference");
                 });
@@ -436,6 +440,13 @@ namespace MvcMovie.Migrations
                         .WithMany("Chats")
                         .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MvcMovie.Models.Conference", b =>
+                {
+                    b.HasOne("MvcMovie.Models.ApplicationUser", "User")
+                        .WithMany("Conferences")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("MvcMovie.Models.Dinner", b =>

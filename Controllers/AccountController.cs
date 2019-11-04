@@ -7,6 +7,8 @@ using MvcMovie.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using MvcMovie.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace MvcMovie.Controllers
 {
@@ -14,11 +16,25 @@ namespace MvcMovie.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly MvcMovieContext context;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, MvcMovieContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.context = context;
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            //var user = await userManager.FindByNameAsync(User.Identity.Name);
+
+            var user = await context.User.Include(b => b.Conferences)
+                .FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
+
+            return View(user);
         }
 
         [HttpPost]
