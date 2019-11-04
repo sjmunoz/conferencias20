@@ -59,6 +59,8 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,Description,Price")] Conference conference)
         {
+            conference.UserId = @User.Identity.Name;
+
             if (ModelState.IsValid)
             {
                 _context.Add(conference);

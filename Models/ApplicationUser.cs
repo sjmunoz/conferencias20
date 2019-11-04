@@ -12,5 +12,7 @@ namespace MvcMovie.Models
         public string Lastname { get; set; }
         public string University { get; set; }
         public string Career { get; set; }
+
+        public virtual ICollection<Conference> Conferences { get; set; }
     }
 }
