@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcMovie.Models;
 
 namespace MvcMovie.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    partial class MvcMovieContextModelSnapshot : ModelSnapshot
+    [Migration("20191104182318_repetition")]
+    partial class repetition
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -337,8 +339,6 @@ namespace MvcMovie.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConferenceId");
-
                     b.ToTable("Repetition");
                 });
 
@@ -498,14 +498,6 @@ namespace MvcMovie.Migrations
                     b.HasOne("MvcMovie.Models.Room", "Room")
                         .WithMany("Parties")
                         .HasForeignKey("RoomID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MvcMovie.Models.Repetition", b =>
-                {
-                    b.HasOne("MvcMovie.Models.Conference", "Conference")
-                        .WithMany("Repetitions")
-                        .HasForeignKey("ConferenceId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
