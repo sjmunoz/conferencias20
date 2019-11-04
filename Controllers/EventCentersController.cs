@@ -33,6 +33,7 @@ namespace MvcMovie.Controllers
             }
 
             var eventCenter = await _context.EventCenter
+                .Include(b => b.Rooms)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (eventCenter == null)
             {
@@ -40,6 +41,32 @@ namespace MvcMovie.Controllers
             }
 
             return View(eventCenter);
+        }
+
+
+        // GET: AddRoom/Create
+        public IActionResult AddRoom(int id)
+        {
+            ViewData["EventCenterId"] = id;
+            return View();
+        }
+
+        // POST: AddRoom/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRoom(int id, [Bind("Capacity,Location")] Room room)
+        {
+
+            room.EventCenterId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(room);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(room);
         }
 
         // GET: EventCenters/Create
