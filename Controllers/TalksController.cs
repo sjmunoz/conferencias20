@@ -21,7 +21,8 @@ namespace MvcMovie.Controllers
         // GET: Talks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Talk.ToListAsync());
+            var mvcMovieContext = _context.Talk.Include(t => t.Conference).Include(t => t.Room);
+            return View(await mvcMovieContext.ToListAsync());
         }
 
         // GET: Talks/Details/5
@@ -33,6 +34,8 @@ namespace MvcMovie.Controllers
             }
 
             var talk = await _context.Talk
+                .Include(t => t.Conference)
+                .Include(t => t.Room)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (talk == null)
             {
@@ -45,6 +48,8 @@ namespace MvcMovie.Controllers
         // GET: Talks/Create
         public IActionResult Create()
         {
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Name");
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location");
             return View();
         }
 
@@ -61,6 +66,8 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", talk.ConferenceId);
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", talk.RoomID);
             return View(talk);
         }
 
@@ -77,6 +84,8 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", talk.ConferenceId);
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", talk.RoomID);
             return View(talk);
         }
 
@@ -112,6 +121,8 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", talk.ConferenceId);
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", talk.RoomID);
             return View(talk);
         }
 
@@ -124,6 +135,8 @@ namespace MvcMovie.Controllers
             }
 
             var talk = await _context.Talk
+                .Include(t => t.Conference)
+                .Include(t => t.Room)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (talk == null)
             {
