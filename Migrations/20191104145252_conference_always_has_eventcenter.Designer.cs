@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcMovie.Models;
 
 namespace MvcMovie.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    partial class MvcMovieContextModelSnapshot : ModelSnapshot
+    [Migration("20191104145252_conference_always_has_eventcenter")]
+    partial class conference_always_has_eventcenter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -321,27 +323,6 @@ namespace MvcMovie.Migrations
                     b.ToTable("Party");
                 });
 
-            modelBuilder.Entity("MvcMovie.Models.Repetition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ConferenceId");
-
-                    b.Property<int>("Day");
-
-                    b.Property<int>("Month");
-
-                    b.Property<int>("Year");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConferenceId");
-
-                    b.ToTable("Repetition");
-                });
-
             modelBuilder.Entity("MvcMovie.Models.Room", b =>
                 {
                     b.Property<int>("Id")
@@ -501,14 +482,6 @@ namespace MvcMovie.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MvcMovie.Models.Repetition", b =>
-                {
-                    b.HasOne("MvcMovie.Models.Conference", "Conference")
-                        .WithMany("Repetitions")
-                        .HasForeignKey("ConferenceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("MvcMovie.Models.Room", b =>
                 {
                     b.HasOne("MvcMovie.Models.EventCenter", "EventCenter")
@@ -522,19 +495,6 @@ namespace MvcMovie.Migrations
                     b.HasOne("MvcMovie.Models.Conference", "Conference")
                         .WithMany()
                         .HasForeignKey("ConferenceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MvcMovie.Models.Talk", b =>
-                {
-                    b.HasOne("MvcMovie.Models.Conference", "Conference")
-                        .WithMany("Talks")
-                        .HasForeignKey("ConferenceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MvcMovie.Models.Room", "Room")
-                        .WithMany("Talks")
-                        .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

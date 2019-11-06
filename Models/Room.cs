@@ -10,6 +10,8 @@ namespace MvcMovie.Models
         public int Id { get; set; }
         public int Capacity { get; set; }
         public string Location { get; set; }
+        public int EventCenterId { get; set; }
+        public virtual EventCenter EventCenter { get; set; }
         public virtual ICollection<Party> Parties { get; set; }
         public virtual ICollection<Chat> Chats { get; set; }
         public virtual ICollection<Talk> Talks { get; set; }
