@@ -10,8 +10,8 @@ using MvcMovie.Models;
 namespace MvcMovie.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    [Migration("20191104002514_add_conference_user_id")]
-    partial class add_conference_user_id
+    [Migration("20191105213445_add_user_to_conference")]
+    partial class add_user_to_conference
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -235,7 +235,11 @@ namespace MvcMovie.Migrations
 
                     b.Property<DateTime>("ReleaseDate");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Conference");
                 });
@@ -438,6 +442,13 @@ namespace MvcMovie.Migrations
                         .WithMany("Chats")
                         .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MvcMovie.Models.Conference", b =>
+                {
+                    b.HasOne("MvcMovie.Models.ApplicationUser", "User")
+                        .WithMany("Conferences")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("MvcMovie.Models.Dinner", b =>

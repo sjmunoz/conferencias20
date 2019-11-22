@@ -10,18 +10,31 @@
     <h4>My Profile</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Lastname)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Lastname)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.University)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.University)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Career)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Career)
+        </dd>
+
     </dl>
     <dl class="row">
         <dt class="col-sm-2">
@@ -31,10 +44,9 @@
             @{
                 foreach (var conference in Model.Conferences)
                 {
-                    <text>
-                        <h1>@conference.Name</h1>
-                        <br />
-                    </text>
+                    <a asp-controller="Conferences" asp-action="Details" asp-route-id="@conference.Id"> @conference.Name </a>
+                    <br />
+                                                                                    
                 }
             }
         </dd>

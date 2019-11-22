@@ -21,7 +21,7 @@ namespace MvcMovie.Controllers
         // GET: Conferences
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Conference.ToListAsync());
+            return View(await _context.Conference.Include(b => b.User).ToListAsync());
         }
 
         // GET: Conferences/Details/5
@@ -37,6 +37,7 @@ namespace MvcMovie.Controllers
                 .Include(b => b.Talks)
                 .Include(b => b.Chats)
                 .Include(b => b.Dinners)
+                .Include(b => b.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (conference == null)
             {
@@ -59,7 +60,8 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,Description,Price")] Conference conference)
         {
-            conference.UserId = @User.Identity.Name;
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            conference.UserId = currentUser.Id;
 
             if (ModelState.IsValid)
             {
