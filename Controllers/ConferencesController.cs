@@ -21,7 +21,8 @@ namespace MvcMovie.Controllers
         // GET: Conferences
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Conference.Include(b => b.User).ToListAsync());
+            var mvcMovieContext = _context.Conference.Include(b => b.User).Include(c => c.EventCenter);
+            return View(await mvcMovieContext.ToListAsync());
         }
 
         // GET: Conferences/Details/5
@@ -38,6 +39,8 @@ namespace MvcMovie.Controllers
                 .Include(b => b.Chats)
                 .Include(b => b.Dinners)
                 .Include(b => b.User)
+                .Include(c => c.EventCenter)
+                .Include(c => c.Repetitions)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (conference == null)
             {
@@ -47,9 +50,36 @@ namespace MvcMovie.Controllers
             return View(conference);
         }
 
+        // GET: AddRepetition/Create
+        public IActionResult AddRepetition(int id)
+        {
+            ViewData["ConferenceId"] = id;
+            return View();
+        }
+
+        // POST: AddRepetition/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRepetition(int id, [Bind("Day, Month, Year")] Repetition repetition)
+        {
+
+            repetition.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(repetition);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(repetition);
+        }
+
         // GET: Conferences/Create
         public IActionResult Create()
         {
+            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id");
+            ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name");
             return View();
         }
 
@@ -58,7 +88,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,Description,Price")] Conference conference)
+        public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,Description,Price,EventCenterId")] Conference conference)
         {
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             conference.UserId = currentUser.Id;
@@ -69,6 +99,7 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
             return View(conference);
         }
 
@@ -85,6 +116,7 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
+            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
             return View(conference);
         }
 
@@ -93,7 +125,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ReleaseDate,Description,Price")] Conference conference)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ReleaseDate,Description,Price,EventCenterId")] Conference conference)
         {
             if (id != conference.Id)
             {
@@ -120,6 +152,7 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
             return View(conference);
         }
 
@@ -132,6 +165,7 @@ namespace MvcMovie.Controllers
             }
 
             var conference = await _context.Conference
+                .Include(c => c.EventCenter)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (conference == null)
             {

@@ -9,23 +9,22 @@ using MvcMovie.Models;
 
 namespace MvcMovie.Controllers
 {
-    public class SponsorsController : Controller
+    public class RepetitionsController : Controller
     {
         private readonly MvcMovieContext _context;
 
-        public SponsorsController(MvcMovieContext context)
+        public RepetitionsController(MvcMovieContext context)
         {
             _context = context;
         }
 
-        // GET: Sponsors
+        // GET: Repetitions
         public async Task<IActionResult> Index()
         {
-            var mvcMovieContext = _context.Sponsor.Include(s => s.Conference);
-            return View(await mvcMovieContext.ToListAsync());
+            return View(await _context.Repetition.ToListAsync());
         }
 
-        // GET: Sponsors/Details/5
+        // GET: Repetitions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,42 +32,39 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
-            var sponsor = await _context.Sponsor
-                .Include(s => s.Conference)
+            var repetition = await _context.Repetition
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (sponsor == null)
+            if (repetition == null)
             {
                 return NotFound();
             }
 
-            return View(sponsor);
+            return View(repetition);
         }
 
-        // GET: Sponsors/Create
+        // GET: Repetitions/Create
         public IActionResult Create()
         {
-            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id");
             return View();
         }
 
-        // POST: Sponsors/Create
+        // POST: Repetitions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ConferenceId")] Sponsor sponsor)
+        public async Task<IActionResult> Create([Bind("Id,Day,Month,Year,ConferenceId")] Repetition repetition)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sponsor);
+                _context.Add(repetition);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", sponsor.ConferenceId);
-            return View(sponsor);
+            return View(repetition);
         }
 
-        // GET: Sponsors/Edit/5
+        // GET: Repetitions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,23 +72,22 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
-            var sponsor = await _context.Sponsor.FindAsync(id);
-            if (sponsor == null)
+            var repetition = await _context.Repetition.FindAsync(id);
+            if (repetition == null)
             {
                 return NotFound();
             }
-            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", sponsor.ConferenceId);
-            return View(sponsor);
+            return View(repetition);
         }
 
-        // POST: Sponsors/Edit/5
+        // POST: Repetitions/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ConferenceId")] Sponsor sponsor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Day,Month,Year,ConferenceId")] Repetition repetition)
         {
-            if (id != sponsor.Id)
+            if (id != repetition.Id)
             {
                 return NotFound();
             }
@@ -101,12 +96,12 @@ namespace MvcMovie.Controllers
             {
                 try
                 {
-                    _context.Update(sponsor);
+                    _context.Update(repetition);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SponsorExists(sponsor.Id))
+                    if (!RepetitionExists(repetition.Id))
                     {
                         return NotFound();
                     }
@@ -117,11 +112,10 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", sponsor.ConferenceId);
-            return View(sponsor);
+            return View(repetition);
         }
 
-        // GET: Sponsors/Delete/5
+        // GET: Repetitions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,31 +123,30 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
-            var sponsor = await _context.Sponsor
-                .Include(s => s.Conference)
+            var repetition = await _context.Repetition
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (sponsor == null)
+            if (repetition == null)
             {
                 return NotFound();
             }
 
-            return View(sponsor);
+            return View(repetition);
         }
 
-        // POST: Sponsors/Delete/5
+        // POST: Repetitions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sponsor = await _context.Sponsor.FindAsync(id);
-            _context.Sponsor.Remove(sponsor);
+            var repetition = await _context.Repetition.FindAsync(id);
+            _context.Repetition.Remove(repetition);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SponsorExists(int id)
+        private bool RepetitionExists(int id)
         {
-            return _context.Sponsor.Any(e => e.Id == id);
+            return _context.Repetition.Any(e => e.Id == id);
         }
     }
 }

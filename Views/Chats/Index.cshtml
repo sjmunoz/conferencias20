@@ -4,7 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="container3">
 <h1>Index</h1>
 
 <p>
@@ -20,10 +19,10 @@
                 @Html.DisplayNameFor(model => model.ModeratorId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RoomID)
+                @Html.DisplayNameFor(model => model.Room)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ConferenceId)
+                @Html.DisplayNameFor(model => model.Conference)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PersonId)
@@ -50,10 +49,10 @@
                 @Html.DisplayFor(modelItem => item.ModeratorId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RoomID)
+                @Html.DisplayFor(modelItem => item.Room.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ConferenceId)
+                @Html.DisplayFor(modelItem => item.Conference.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PersonId)
@@ -76,4 +75,3 @@
 }
     </tbody>
 </table>
-</div>

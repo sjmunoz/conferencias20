@@ -16,6 +16,9 @@ namespace MvcMovie.Models
         public decimal Price { get; set; }
 
         public string UserId { get; set; }
+        public int EventCenterId { get; set; }
+        public virtual EventCenter EventCenter { get; set; }
+        public virtual ICollection<Repetition> Repetitions { get; set; }
         public virtual ICollection<Party> Parties { get; set; }
         public virtual ICollection<Talk> Talks { get; set; }
         public virtual ICollection<Chat> Chats { get; set; }

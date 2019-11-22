@@ -41,59 +41,20 @@
             @Html.DisplayFor(model => model.User.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Parties)
+            @Html.DisplayNameFor(model => model.EventCenter)
         </dt>
         <dd class="col-sm-10">
-            @{
-                foreach (var party in Model.Parties)
-                {
-                    <text>
-                        <h1>@party.Track</h1>
-                        <br />
-                    </text>
-                }
-            }
+            @Html.DisplayFor(model => model.EventCenter.Id)
         </dd>
-
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Talks)
+            @Html.DisplayNameFor(model => model.Repetitions)
         </dt>
         <dd class="col-sm-10">
             @{
-                foreach (var talk in Model.Talks)
+                foreach (var repetitions in Model.Repetitions)
                 {
                     <text>
-                        <h1>@talk.Track</h1>
-                        <br />
-                    </text>
-                }
-            }
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Chats)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                foreach (var chat in Model.Chats)
-                {
-                    <text>
-                        <h1>@chat.Track</h1>
-                        <br />
-                    </text>
-                }
-            }
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Dinners)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                foreach (var dinner in Model.Dinners)
-                {
-                    <text>
-                        <h1>@dinner.Track</h1>
+                        <h5>Days: @repetitions.Day Months: @repetitions.Month Years: @repetitions.Year</h5>
                         <br />
                     </text>
                 }
