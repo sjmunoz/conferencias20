@@ -319,7 +319,6 @@ h6, .h6 {
 
 .container2 {
     margin: auto;
-    margin-top: 5%;
 }
 
 .container3 {
@@ -8038,10 +8037,9 @@ h1, h2, h3, h4, h5,
 
 .ftco-navbar-light {
   background: transparent !important;
-  position: absolute;
-  top: 20px;
   left: 0;
   right: 0;
+  margin-top: -10px;
   z-index: 3; }
   @media (max-width: 991.98px) {
     .ftco-navbar-light {
@@ -9702,4 +9700,47 @@ textarea.form-control {
 .loginPage {
     padding-left: 30%; 
     padding-right: 30%;
+}
+
+
+#button5 {
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+}
+
+    #button5:hover {
+        background-color: #555555;
+        color: white;
+    }
+
+.coolButton {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.nav-item2 {
+    margin-top: 1%;
+}
+
+.down-nav-item{
+    margin-top: 1.7%;
+}
+
+.limit-right{
+    border-right: solid 1px;
+}
+
+.regular-crud{
+    margin-left: 10%;
+    margin-right: 10%;
 }
