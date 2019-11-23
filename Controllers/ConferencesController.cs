@@ -33,6 +33,7 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             var conference = await _context.Conference
                 .Include(b => b.Parties)
                 .Include(b => b.Talks)
@@ -41,12 +42,16 @@ namespace MvcMovie.Controllers
                 .Include(b => b.User)
                 .Include(c => c.EventCenter)
                 .Include(c => c.Repetitions)
+                .Include(c => c.Attendants)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            var conferenceUser = await _context.ConferenceUser.FindAsync(currentUser.Id, conference.Id);
             if (conference == null)
             {
                 return NotFound();
             }
 
+            ViewData["conferenceUser"] = conferenceUser;
+            ViewData["available"] = conference.Attendants.Count - conference.Spots;
             return View(conference);
         }
 
@@ -88,7 +93,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,Description,Price,EventCenterId")] Conference conference)
+        public async Task<IActionResult> Create([Bind("Id,Name,ReleaseDate,Description,Price,EventCenterId, Spots")] Conference conference)
         {
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             conference.UserId = currentUser.Id;
@@ -125,7 +130,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ReleaseDate,Description,Price,EventCenterId")] Conference conference)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ReleaseDate,Description,Price,EventCenterId, UserId, Spots")] Conference conference)
         {
             if (id != conference.Id)
             {
@@ -184,6 +189,43 @@ namespace MvcMovie.Controllers
             _context.Conference.Remove(conference);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // SUBSCRIBIR USUARIO A CONFERENCIA
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAttendant(int id)
+        {
+            var conference = await _context.Conference.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (conference == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var conferenceUser = new ConferenceUser();
+            conferenceUser.Conference = conference;
+            conferenceUser.User = currentUser;
+            if (ModelState.IsValid)
+            {
+                _context.Add(conferenceUser);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAttendant(int id)
+        {
+            var conference = await _context.Conference.FindAsync(id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var conferenceUser = await _context.ConferenceUser.FindAsync(currentUser.Id, conference.Id);
+
+            _context.ConferenceUser.Remove(conferenceUser);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
         }
 
         private bool ConferenceExists(int id)

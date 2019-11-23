@@ -15,6 +15,22 @@ namespace MvcMovie.Models
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ConferenceUser>()
+                .HasKey(bc => new { bc.UserId, bc.ConferenceId });
+            modelBuilder.Entity<ConferenceUser>()
+                .HasOne(bc => bc.User)
+                .WithMany(b => b.AttendConferences)
+                .HasForeignKey(bc => bc.UserId);
+            modelBuilder.Entity<ConferenceUser>()
+                .HasOne(bc => bc.Conference)
+                .WithMany(c => c.Attendants)
+                .HasForeignKey(bc => bc.ConferenceId);
+        }
+
         public DbSet<MvcMovie.Models.Conference> Conference { get; set; }
 
 
@@ -35,5 +51,6 @@ namespace MvcMovie.Models
         public DbSet<MvcMovie.Models.ApplicationUser> User { get; set; }
         public DbSet<MvcMovie.Models.Repetition> Repetition { get; set; }
 
+        public DbSet<MvcMovie.Models.ConferenceUser> ConferenceUser { get; set; }
     }
 }

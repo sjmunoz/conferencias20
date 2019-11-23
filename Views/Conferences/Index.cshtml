@@ -25,6 +25,9 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Spots)
+            </th>
+            <th>
                 User
             </th>
             <th>
@@ -49,7 +52,10 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                 @item.User
+                @Html.DisplayFor(modelItem => item.Spots)
+            </td>
+            <td>
+                @item.User
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EventCenter.Name)

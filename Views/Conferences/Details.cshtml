@@ -35,6 +35,12 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Spots)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Spots)
+        </dd>
+        <dt class="col-sm-2">
             User
         </dt>
         <dd class="col-sm-10">
@@ -60,9 +66,45 @@
                 }
             }
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Attendants)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                foreach (var attendant in Model.Attendants)
+                {
+                    <text>
+                        <h5> @attendant.User.Name @attendant.User.Lastname</h5>
+                        <br />
+                    </text>
+                }
+            }
+        </dd>
     </dl>
 </div>
 <div>
+    @{
+        if (ViewBag.conferenceUser != null)
+        {
+        <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
+            <button type="submit">
+                Unsubscribe
+            </button>
+        </form>
+        }
+        else if (@Model.Attendants.Count < @Model.Spots)
+        {
+            <form method="post" asp-action="AddAttendant" asp-route-id="@Model.Id">
+                <button type="submit">
+                    Subscribe
+                </button>
+            </form>
+        }
+        else
+        {
+            <h4>Esta conferencia esta llena!</h4>
+        }
+    }
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

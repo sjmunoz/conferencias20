@@ -31,7 +31,9 @@ namespace MvcMovie.Controllers
         {
             //var user = await userManager.FindByNameAsync(User.Identity.Name);
 
-            var user = await context.User.Include(b => b.Conferences)
+            var user = await context.User
+                .Include(b => b.Conferences)
+                .Include(b => b.AttendConferences)
                 .FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
 
             return View(user);
