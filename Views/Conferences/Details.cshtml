@@ -3,108 +3,111 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="regular-crud">
 
-<h1>Details</h1>
+    <h1>Details</h1>
 
-<div>
-    <h4>Conference</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Spots)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Spots)
-        </dd>
-        <dt class="col-sm-2">
-            User
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EventCenter)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EventCenter.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Repetitions)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                foreach (var repetitions in Model.Repetitions)
-                {
-                    <text>
-                        <h5>Days: @repetitions.Day Months: @repetitions.Month Years: @repetitions.Year</h5>
-                        <br />
-                    </text>
+    <div>
+        <h4>Conference</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ReleaseDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Spots)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Spots)
+            </dd>
+            <dt class="col-sm-2">
+                User
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.User.Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EventCenter)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EventCenter.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Repetitions)
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    foreach (var repetitions in Model.Repetitions)
+                    {
+                        <text>
+                            <h5>Days: @repetitions.Day Months: @repetitions.Month Years: @repetitions.Year</h5>
+                            <br />
+                        </text>
+                    }
                 }
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Attendants)
-        </dt>
-        <dd class="col-sm-10">
-            @{
-                foreach (var attendant in Model.Attendants)
-                {
-                    <text>
-                        <h5> @attendant.User.Name @attendant.User.Lastname</h5>
-                        <br />
-                    </text>
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Attendants)
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    foreach (var attendant in Model.Attendants)
+                    {
+                        <text>
+                            <h6> @attendant.User.Name @attendant.User.Lastname</h6>
+                            <br />
+                        </text>
+                    }
                 }
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @{
+            if (ViewBag.conferenceUser != null)
+            {
+                <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
+                    <button type="submit"  class="coolButton" id="button5">
+                        Unsubscribe
+                    </button>
+                </form>
             }
-        </dd>
-    </dl>
-</div>
-<div>
-    @{
-        if (ViewBag.conferenceUser != null)
-        {
-        <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
-            <button type="submit">
-                Unsubscribe
-            </button>
-        </form>
+            else if (@Model.Attendants.Count < @Model.Spots)
+            {
+                <form method="post" asp-action="AddAttendant" asp-route-id="@Model.Id">
+                    <button type="submit" class="coolButton" id="button5">
+                        Subscribe
+                    </button>
+                <a asp-action="Edit" asp-route-id="@Model.Id" id="button5" class="coolButton">Edit</a>
+                <a asp - action="Index" id="button5" class="coolButton float-right">Back to List</a>
+                </form>
+            }
+            else
+            {
+                <h4>Esta conferencia esta llena!</h4>
+            }
         }
-        else if (@Model.Attendants.Count < @Model.Spots)
-        {
-            <form method="post" asp-action="AddAttendant" asp-route-id="@Model.Id">
-                <button type="submit">
-                    Subscribe
-                </button>
-            </form>
-        }
-        else
-        {
-            <h4>Esta conferencia esta llena!</h4>
-        }
-    }
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    </div>
 </div>
