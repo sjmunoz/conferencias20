@@ -59,12 +59,11 @@
 
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item down-nav-item"><a href="/speakers" class="nav-link">Speakers</a></li>
+                    <li class="nav-item down-nav-item"><a href="/conferences" class="nav-link">Conferences</a></li>
                     <li class="nav-item down-nav-item"><a href="/parties" class="nav-link">Parties</a></li>
                     <li class="nav-item down-nav-item"><a href="/chats" class="nav-link">Chats</a></li>
                     <li class="nav-item down-nav-item"><a href="/dinners" class="nav-link">Dinners</a></li>
                     <li class="nav-item down-nav-item"><a href="/talks" class="nav-link">Talks</a></li>
-                    <li class="nav-item down-nav-item limit-right"><a href="/sponsors" class="nav-link">Sponsors</a></li>
                     @if (signInManager.IsSignedIn(User))
                     {
                         <li class="nav-item2">
@@ -75,8 +74,8 @@
                             </form>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
+                        <li class="nav-item down-nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
                         </li>
                     }
                     else
