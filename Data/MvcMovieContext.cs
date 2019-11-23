@@ -52,5 +52,7 @@ namespace MvcMovie.Models
         public DbSet<MvcMovie.Models.Repetition> Repetition { get; set; }
 
         public DbSet<MvcMovie.Models.ConferenceUser> ConferenceUser { get; set; }
+
+        public DbSet<MvcMovie.Models.ConferenceNotification> ConferenceNotification { get; set; }
     }
 }

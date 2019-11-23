@@ -51,6 +51,7 @@ namespace MvcMovie.Controllers
             }
 
             ViewData["conferenceUser"] = conferenceUser;
+            ViewData["currentUser"] = currentUser;
             ViewData["available"] = conference.Attendants.Count - conference.Spots;
             return View(conference);
         }
@@ -225,6 +226,37 @@ namespace MvcMovie.Controllers
 
             _context.ConferenceUser.Remove(conferenceUser);
             await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        // GET: AddRepetition/Create
+        public IActionResult AddNotification(int id)
+        {
+            ViewData["ConferenceId"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddNotification(int id, [Bind("Message")] ConferenceNotification notification)
+        {
+            var conference = await _context.Conference.Include(c => c.Attendants).FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (conference == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var attendant in conference.Attendants) { 
+                var newNotification = new ConferenceNotification();
+                newNotification.Message = notification.Message;
+                newNotification.UserId = attendant.UserId;
+                newNotification.ConferenceId = conference.Id;
+                _context.Add(newNotification);
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction("Details", new { id = id });
         }
 

@@ -107,6 +107,15 @@
             {
                 <h4>Esta conferencia esta llena!</h4>
             }
+
+            if (ViewBag.currentUser.Id == @Model.UserId)
+            {
+                <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
+                    <button type="submit"  class="coolButton" id="button5">
+                        Notification
+                    </button>
+                </form>
+            }
         }
 
     </div>
