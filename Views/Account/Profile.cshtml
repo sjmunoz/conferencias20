@@ -1,0 +1,71 @@
+﻿@model MvcMovie.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>My Profile</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Lastname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Lastname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.University)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.University)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Career)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Career)
+        </dd>
+
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Mis Conferencias
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                foreach (var conference in Model.Conferences)
+                {
+                    <a asp-controller="Conferences" asp-action="Details" asp-route-id="@conference.Id"> @conference.Name </a>
+                    <br />
+                }
+            }
+        </dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Subscripciones a Conferencias
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                foreach (var attendConference in Model.AttendConferences)
+                {
+                    <a asp-controller="Conferences" asp-action="Details" asp-route-id="@attendConference.Conference.Id"> @attendConference.Conference.Name </a>
+                    <br />
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

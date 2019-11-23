@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcMovie.Models;
 
 namespace MvcMovie.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    partial class MvcMovieContextModelSnapshot : ModelSnapshot
+    [Migration("20191123005318_user_conference")]
+    partial class user_conference
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -558,19 +560,6 @@ namespace MvcMovie.Migrations
                     b.HasOne("MvcMovie.Models.Conference", "Conference")
                         .WithMany("Sponsors")
                         .HasForeignKey("ConferenceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MvcMovie.Models.Talk", b =>
-                {
-                    b.HasOne("MvcMovie.Models.Conference", "Conference")
-                        .WithMany("Talks")
-                        .HasForeignKey("ConferenceId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MvcMovie.Models.Room", "Room")
-                        .WithMany("Talks")
-                        .HasForeignKey("RoomID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
