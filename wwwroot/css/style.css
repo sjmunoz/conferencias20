@@ -9743,4 +9743,8 @@ textarea.form-control {
 .regular-crud{
     margin-left: 10%;
     margin-right: 10%;
+
+    a{
+         padding: 10px;
+     }
 }
