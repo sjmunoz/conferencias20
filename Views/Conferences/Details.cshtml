@@ -90,8 +90,7 @@
                     foreach (var party in Model.Parties)
                     {
                         <text>
-                            <a href="/Parties/Details/@party.Id">@party.Id .- @party.Track </a>
-                            <br />
+                            <a href="/Parties/Details/@party.Id">@party.Track - { @party.EventDate } </a><br />
                         </text>
                     }
                 }
@@ -104,8 +103,7 @@
                     foreach (var chat in Model.Chats)
                     {
                         <text>
-                            <a href="/Chats/Details/@chat.Id">@chat.Id .- @chat.Track </a>
-                            <br />
+                            <a href="/Parties/Details/@chat.Id">@chat.Track - { @chat.EventDate } </a><br />
                         </text>
                     }
                 }
@@ -118,8 +116,7 @@
                     foreach (var dinner in Model.Dinners)
                     {
                         <text>
-                            <a href="/Dinners/Details/@dinner.Id">@dinner.Id .- @dinner.Track </a>
-                            <br />
+                            <a href="/Parties/Details/@dinner.Id">@dinner.Track - { @dinner.EventDate } </a><br />
                         </text>
                     }
                 }
@@ -132,8 +129,7 @@
                     foreach (var talk in Model.Talks)
                     {
                         <text>
-                            <a href="/Talks/Details/@talk.Id">@talk.Id .- @talk.Track </a>
-                            <br />
+                            <a href="/Parties/Details/@talk.Id">@talk.Track - { @talk.EventDate } </a><br />
                         </text>
                     }
                 }

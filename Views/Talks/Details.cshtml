@@ -3,58 +3,59 @@
 @{
     ViewData["Title"] = "Details";
 }
+    <div class="regular-crud">
+        <h1>Details</h1>
 
-<h1>Details</h1>
-
-<div>
-    <h4>Talk</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Resources)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Resources)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Talker)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Talker)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Room)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Room.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Conference)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Conference.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EventDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndEventDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndEventDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Track)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Track)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+        <div>
+            <h4>Talk</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Resources)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Resources)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Talker)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Talker)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Room)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Room.Id)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Conference)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Conference.Id)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.EventDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.EventDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.EndEventDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.EndEventDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Track)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Track)
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>

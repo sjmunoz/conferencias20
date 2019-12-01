@@ -49,9 +49,7 @@
             foreach (var room in Model.Rooms)
             {
                 <text>
-                    <a href="/Rooms/Details/@room.Id">@room.Id</a>
-                    <h5>@room.Location</h5>
-                    <br />
+                    <a href="/Rooms/Details/@room.Id">- @room.Location</a>
                 </text>
             }
         }

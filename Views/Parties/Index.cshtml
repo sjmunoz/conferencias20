@@ -19,9 +19,6 @@
                         @Html.DisplayNameFor(model => model.Conference)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.UserId)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.EventDate)
                     </th>
                     <th>
@@ -38,13 +35,10 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Room.Id)
+                            @Html.DisplayFor(modelItem => item.Room.Location)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Conference.Id)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserId)
+                            @Html.DisplayFor(modelItem => item.Conference.Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.EventDate)
