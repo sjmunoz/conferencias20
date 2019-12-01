@@ -69,6 +69,7 @@ namespace MvcMovie.Controllers
             //ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location");
             ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
             ViewData["ConferenceId"] = id;
+            ViewData["ConferenceName"] = conference.Name;
             return View();
         }
 
