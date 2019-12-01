@@ -5,201 +5,326 @@
 
 <!-- END nav -->
 
-<div class="hero-wrap" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    <div class="hero-wrap" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+        @{
+            if (@Model.Count > 0)
+            {
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row no-gutters slider-text align-items-center justify-content-start" data-scrollax-parent="true">
+                        <div class="col-lg-6 col-md-6 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+                            <h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
+                                @Model.Last().EventCenter.Name <br><span>
+                                    @Model.Last().Name
+                                </span>
+                            </h1>
 
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text align-items-center justify-content-start" data-scrollax-parent="true">
-            <div class="col-lg-6 col-md-6 ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-                <h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
-                    @Model.Last().EventCenter.Name <br><span>
-                    @Model.Last().Name
-                </span>
-                </h1>
+                            <p class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
+                                <span class="icon-calendar mr-2"></span>@Model.Last().ReleaseDate - @Model.Last().EventCenter.Address
+                            </p>
+                            <div id="timer" class="d-flex">
+                                <div class="time" id="days"></div>
+                                <div class="time pl-3" id="hours"></div>
+                                <div class="time pl-3" id="minutes"></div>
+                                <div class="time pl-3" id="seconds"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col"></div>
+                        <div class="col-lg-4 col-md-6 mt-0 mt-md-5">
+                            <form action="#" class="request-form ftco-animate">
+                                <h2>Conferences</h2>
+                                <div class="form-group">
+                                    <a type="submit" href="/Conferences/Details/@Model.Last().Id" class="btn btn-primary py-3 px-4"> Check out Details  </a>
+                                </div>
+                                <div class="form-group">
+                                    <a type="submit" href="#MoreConferences" class="btn btn-primary py-3 px-4"> See more Conferences </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 
-                <p class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
-                    <span class="icon-calendar mr-2"></span>@Model.Last().ReleaseDate - @Model.Last().EventCenter.Address
-                </p>
-                <div id="timer" class="d-flex">
-                    <div class="time" id="days"></div>
-                    <div class="time pl-3" id="hours"></div>
-                    <div class="time pl-3" id="minutes"></div>
-                    <div class="time pl-3" id="seconds"></div>
+
+
+    <section class="ftco-section" id="MoreConferences">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <h2 class="mb-3">More Conferences</h2>
                 </div>
             </div>
-            <div class="col-lg-2 col"></div>
-            <div class="col-lg-4 col-md-6 mt-0 mt-md-5">
-                <form action="#" class="request-form ftco-animate">
-                    <h2>Conferences</h2>
-                    <div class="form-group">
-                        <a type="submit" href="/Conferences/Details/@Model.Last().Id" class="btn btn-primary py-3 px-4"> Check out Details  </a>
+            <div class="ftco-schedule">
+                <div class="row">
+                    <div class="col-md-3 nav-link-wrap text-center text-md-right">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            @{
+                                if (@Model.Count > 1)
+                                {
+                                    <a class="nav-link ftco-animate active" id="v-pills-1-tab" data-toggle="pill" href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">@Model.ElementAtOrDefault(Model.Count - 2).Name <span>21 July 2019</span></a>
+                                }
+                            }
+                            @{
+                                if (@Model.Count > 2)
+                                {
+                                    <a class="nav-link ftco-animate" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">@Model.ElementAtOrDefault(Model.Count - 3).Name <span>22 July 2019</span></a>
+                                }
+                            }
+                            <a class="nav-link ftco-animate" id="v-pills-3-tab" href="/conferences"> More Conferences</a>
+
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <a type="submit" href="#MoreConferences" class="btn btn-primary py-3 px-4"> See more Conferences </a>
+                    <div class="col-md-9 tab-wrap">
+
+                        <div class="tab-content" id="v-pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="day-1-tab">
+                                @{
+                                    if (@Model.Count > 1)
+                                    {
+                                        <h1><a href="/Conferences/Details/@Model.ElementAtOrDefault(Model.Count - 2).Id">@Model.ElementAtOrDefault(Model.Count - 2).Name </a></h1>
+                                        if (@Model.ElementAtOrDefault(Model.Count - 2).Parties.Count() > 0)
+                                        {
+                                            <div class="speaker-wrap ftco-animate d-md-flex">
+                                                <div class="img speaker-img" style="background-image: url(images/staff-1.jpg);"></div>
+                                                <div class="text">
+                                                    <h2><a href=""> @Model.ElementAtOrDefault(Model.Count - 2).Parties.First().Track </a></h2>
+                                                    <h5><a href="#">Parties</a></h5>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <span class="time">09:00 am - 4:30 pm</span>
+                                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                @{
+                                    if (@Model.Count > 1)
+                                    {
+                                        if (@Model.ElementAtOrDefault(Model.Count - 2).Talks.Count() > 0)
+                                        {
+                                            <div class="speaker-wrap ftco-animate d-md-flex">
+                                                <div class="img speaker-img" style="background-image: url(images/staff-2.jpg);"></div>
+                                                <div class="text">
+                                                    <h2><a href="#">@Model.ElementAtOrDefault(Model.Count - 2).Talks.First().Track</a></h2>
+                                                    <h5><a href="#">talk</a></h5>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <span class="time">09:00 am - 4:30 pm</span>
+                                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                @{
+                                    if (@Model.Count > 1)
+                                    {
+                                        if (@Model.ElementAtOrDefault(Model.Count - 2).Chats.Count() > 0)
+                                        {
+                                            <div class="speaker-wrap ftco-animate d-md-flex">
+                                                <div class="img speaker-img" style="background-image: url(images/staff-3.jpg);"></div>
+                                                <div class="text">
+                                                    <h2><a href="#">@Model.ElementAtOrDefault(Model.Count - 2).Chats.First().Track</a></h2>
+                                                    <h5><a href="#">Chat</a></h5>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <span class="time">09:00 am - 4:30 pm</span>
+                                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
+                                                </div>
+                                            </div>
+
+                                        }
+                                    }
+                                }
+                            </div>
+
+                            <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-day-2-tab">
+                                @{
+                                    if (@Model.Count > 2)
+                                    {
+                                        <h1><a href="/Conferences/Details/@Model.ElementAtOrDefault(Model.Count - 3).Id">@Model.ElementAtOrDefault(Model.Count - 3).Name </a></h1>
+                                        if (@Model.ElementAtOrDefault(Model.Count - 3).Parties.Count() > 0)
+                                        {
+                                            <div class="speaker-wrap ftco-animate d-md-flex">
+                                                <div class="img speaker-img" style="background-image: url(images/staff-4.jpg);"></div>
+                                                <div class="text">
+                                                    <h2><a href="#">@Model.ElementAtOrDefault(Model.Count - 3).Parties.First().Track</a></h2>
+                                                    <h5><a href="#">Parties</a></h5>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <span class="time">09:00 am - 4:30 pm</span>
+                                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                @{
+                                    if (@Model.Count > 2)
+                                    {
+                                        if (@Model.ElementAtOrDefault(Model.Count - 3).Talks.Count() > 0)
+                                        {
+                                            <div class="speaker-wrap ftco-animate d-md-flex">
+                                                <div class="img speaker-img" style="background-image: url(images/staff-1.jpg);"></div>
+                                                <div class="text">
+                                                    <h2><a href="#">@Model.ElementAtOrDefault(Model.Count - 3).Talks.First().Track</a></h2>
+                                                    <h5><a href="#">Talks</a></h5>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <span class="time">09:00 am - 4:30 pm</span>
+                                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                @{
+                                    if (@Model.Count > 2)
+                                    {
+                                        if (@Model.ElementAtOrDefault(Model.Count - 3).Chats.Count() > 0)
+                                        {
+                                            <div class="speaker-wrap ftco-animate d-md-flex">
+                                                <div class="img speaker-img" style="background-image: url(images/staff-2.jpg);"></div>
+                                                <div class="text">
+                                                    <h2><a href="#">@Model.ElementAtOrDefault(Model.Count - 3).Chats.First().Track</a></h2>
+                                                    <h5><a href="#">Chats</a></h5>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <span class="time">09:00 am - 4:30 pm</span>
+                                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+                                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-
-<section class="ftco-section" id="MoreConferences">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center heading-section ftco-animate">
-                <h2 class="mb-3">More Conferences</h2>
+    <section class="ftco-section ftco-gallery ftco-no-pt">
+        <div class="container-fluid px-4">
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <h2 class="mb-3">Conference Gallery</h2>
+                </div>
             </div>
-        </div>
-        <div class="ftco-schedule">
             <div class="row">
-                <div class="col-md-3 nav-link-wrap text-center text-md-right">
-                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <a class="nav-link ftco-animate active" id="v-pills-1-tab" data-toggle="pill" href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">@Model.ElementAtOrDefault(Model.Count - 2).Name <span>21 July 2019</span></a>
-
-                        <a class="nav-link ftco-animate" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">Second Day <span>22 July 2019</span></a>
-
-                        <a class="nav-link ftco-animate" id="v-pills-3-tab" href="/conferences"> More Conferences</a>
-
-                    </div>
-                </div>
-                <div class="col-md-9 tab-wrap">
-
-                    <div class="tab-content" id="v-pills-tabContent">
-
-                        <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="day-1-tab">
-                            <div class="speaker-wrap ftco-animate d-md-flex">
-                                <div class="img speaker-img" style="background-image: url(images/staff-1.jpg);"></div>
-                                <div class="text">
-                                    <h2><a href=""> Model.ElementAtOrDefault(Model.Count - 2).Parties.Last().Track </a></h2>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <span class="time">09:00 am - 4:30 pm</span>
-                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
-                                </div>
-                            </div>
-                            <div class="speaker-wrap ftco-animate d-md-flex">
-                                <div class="img speaker-img" style="background-image: url(images/staff-2.jpg);"></div>
-                                <div class="text">
-                                    <h2><a href="#">Introduction to Business Leaders</a></h2>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <span class="time">09:00 am - 4:30 pm</span>
-                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
-                                </div>
-                            </div>
-                            <div class="speaker-wrap ftco-animate d-md-flex">
-                                <div class="img speaker-img" style="background-image: url(images/staff-3.jpg);"></div>
-                                <div class="text">
-                                    <h2><a href="#">Introduction to Business Leaders</a></h2>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <span class="time">09:00 am - 4:30 pm</span>
-                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
-                                </div>
-                            </div>
+                <div class="col-md-3 ftco-animate">
+                    <a href="images/image_1.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/image_1.jpg);">
+                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                            <span class="icon-instagram"></span>
                         </div>
+                    </a>
+                </div>
+                <div class="col-md-3 ftco-animate">
+                    <a href="images/image_2.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/image_2.jpg);">
+                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                            <span class="icon-instagram"></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 ftco-animate">
+                    <a href="images/image_3.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/image_3.jpg);">
+                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                            <span class="icon-instagram"></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 ftco-animate">
+                    <a href="images/image_4.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/image_4.jpg);">
+                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                            <span class="icon-instagram"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                        <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-day-2-tab">
-                            <div class="speaker-wrap ftco-animate d-md-flex">
-                                <div class="img speaker-img" style="background-image: url(images/staff-4.jpg);"></div>
-                                <div class="text">
-                                    <h2><a href="#">Introduction to Business Leaders</a></h2>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <span class="time">09:00 am - 4:30 pm</span>
-                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
-                                </div>
-                            </div>
-                            <div class="speaker-wrap ftco-animate d-md-flex">
-                                <div class="img speaker-img" style="background-image: url(images/staff-1.jpg);"></div>
-                                <div class="text">
-                                    <h2><a href="#">Introduction to Business Leaders</a></h2>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <span class="time">09:00 am - 4:30 pm</span>
-                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
-                                </div>
-                            </div>
-                            <div class="speaker-wrap ftco-animate d-md-flex">
-                                <div class="img speaker-img" style="background-image: url(images/staff-2.jpg);"></div>
-                                <div class="text">
-                                    <h2><a href="#">Introduction to Business Leaders</a></h2>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <span class="time">09:00 am - 4:30 pm</span>
-                                    <p class="location"><span class="icon-map-o mr-2"></span>20 July 2019 - Hall, Building Los Angeles CA</p>
-                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                    <h3 class="speaker-name">&mdash; <a href="#">Ryan Thompson</a> <span class="position">Founder of Wordpress</span></h3>
-                                </div>
+    <section class="ftco-section ftco-no-pt ftco-no-pb">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <h2 class="mb-1">Conference Speakers</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-stretch">
+                    <div class="speaker ftco-animate d-flex align-items-stretch">
+                        <div class="img" style="background-image: url(images/staff-3.jpg);">
+                            <div class="text text-absolute">
+                                <h3>Robert Bonner</h3>
+                                <span class="position">Businessmen</span>
+                                <ul class="ftco-social mt-3">
+                                    <li><a href="#"><span class="icon-twitter"></span></a></li>
+                                    <li><a href="#"><span class="icon-facebook"></span></a></li>
+                                    <li><a href="#"><span class="icon-instagram"></span></a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="ftco-section ftco-gallery ftco-no-pt">
-    <div class="container-fluid px-4">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center heading-section ftco-animate">
-                <h2 class="mb-3">Conference Gallery</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3 ftco-animate">
-                <a href="images/image_1.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/image_1.jpg);">
-                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                        <span class="icon-instagram"></span>
+                <div class="col-md-6">
+                    <div class="speaker ftco-animate speaker-1 d-flex align-items-center mb-5">
+                        <div class="img" style="background-image: url(images/staff-1.jpg);"></div>
+                        <div class="text pl-4">
+                            <h3>Kyle Bochs</h3>
+                            <span class="position">Businessman</span>
+                            <p>A small river named Duden flows by their place and supplies</p>
+                            <ul class="ftco-social">
+                                <li><a href="#"><span class="icon-twitter"></span></a></li>
+                                <li><a href="#"><span class="icon-facebook"></span></a></li>
+                                <li><a href="#"><span class="icon-instagram"></span></a></li>
+                            </ul>
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div class="col-md-3 ftco-animate">
-                <a href="images/image_2.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/image_2.jpg);">
-                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                        <span class="icon-instagram"></span>
+                    <div class="speaker ftco-animate speaker-1 d-flex align-items-center mb-5">
+                        <div class="img" style="background-image: url(images/staff-2.jpg);"></div>
+                        <div class="text pl-4">
+                            <h3>Arnold Thompson</h3>
+                            <span class="position">Businessman</span>
+                            <p>A small river named Duden flows by their place and supplies</p>
+                            <ul class="ftco-social">
+                                <li><a href="#"><span class="icon-twitter"></span></a></li>
+                                <li><a href="#"><span class="icon-facebook"></span></a></li>
+                                <li><a href="#"><span class="icon-instagram"></span></a></li>
+                            </ul>
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div class="col-md-3 ftco-animate">
-                <a href="images/image_3.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/image_3.jpg);">
-                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                        <span class="icon-instagram"></span>
+                    <div class="speaker ftco-animate speaker-1 d-flex align-items-center mb-5">
+                        <div class="img" style="background-image: url(images/staff-3.jpg);"></div>
+                        <div class="text pl-4">
+                            <h3>Ryan Sy</h3>
+                            <span class="position">Businessman</span>
+                            <p>A small river named Duden flows by their place and supplies</p>
+                            <ul class="ftco-social">
+                                <li><a href="#"><span class="icon-twitter"></span></a></li>
+                                <li><a href="#"><span class="icon-facebook"></span></a></li>
+                                <li><a href="#"><span class="icon-instagram"></span></a></li>
+                            </ul>
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div class="col-md-3 ftco-animate">
-                <a href="images/image_4.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url(images/image_4.jpg);">
-                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                        <span class="icon-instagram"></span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="ftco-section ftco-no-pt ftco-no-pb">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-7 text-center heading-section ftco-animate">
-                <h2 class="mb-1">Conference Speakers</h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 d-flex align-items-stretch">
-                <div class="speaker ftco-animate d-flex align-items-stretch">
-                    <div class="img" style="background-image: url(images/staff-3.jpg);">
-                        <div class="text text-absolute">
-                            <h3>Robert Bonner</h3>
-                            <span class="position">Businessmen</span>
-                            <ul class="ftco-social mt-3">
+                    <div class="speaker ftco-animate speaker-1 d-flex align-items-center mb-5">
+                        <div class="img" style="background-image: url(images/staff-4.jpg);"></div>
+                        <div class="text pl-4">
+                            <h3>Alysa Derick</h3>
+                            <span class="position">Businesswoman</span>
+                            <p>A small river named Duden flows by their place and supplies</p>
+                            <ul class="ftco-social">
                                 <li><a href="#"><span class="icon-twitter"></span></a></li>
                                 <li><a href="#"><span class="icon-facebook"></span></a></li>
                                 <li><a href="#"><span class="icon-instagram"></span></a></li>
@@ -208,107 +333,52 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="speaker ftco-animate speaker-1 d-flex align-items-center mb-5">
-                    <div class="img" style="background-image: url(images/staff-1.jpg);"></div>
-                    <div class="text pl-4">
-                        <h3>Kyle Bochs</h3>
-                        <span class="position">Businessman</span>
-                        <p>A small river named Duden flows by their place and supplies</p>
-                        <ul class="ftco-social">
-                            <li><a href="#"><span class="icon-twitter"></span></a></li>
-                            <li><a href="#"><span class="icon-facebook"></span></a></li>
-                            <li><a href="#"><span class="icon-instagram"></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="speaker ftco-animate speaker-1 d-flex align-items-center mb-5">
-                    <div class="img" style="background-image: url(images/staff-2.jpg);"></div>
-                    <div class="text pl-4">
-                        <h3>Arnold Thompson</h3>
-                        <span class="position">Businessman</span>
-                        <p>A small river named Duden flows by their place and supplies</p>
-                        <ul class="ftco-social">
-                            <li><a href="#"><span class="icon-twitter"></span></a></li>
-                            <li><a href="#"><span class="icon-facebook"></span></a></li>
-                            <li><a href="#"><span class="icon-instagram"></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="speaker ftco-animate speaker-1 d-flex align-items-center mb-5">
-                    <div class="img" style="background-image: url(images/staff-3.jpg);"></div>
-                    <div class="text pl-4">
-                        <h3>Ryan Sy</h3>
-                        <span class="position">Businessman</span>
-                        <p>A small river named Duden flows by their place and supplies</p>
-                        <ul class="ftco-social">
-                            <li><a href="#"><span class="icon-twitter"></span></a></li>
-                            <li><a href="#"><span class="icon-facebook"></span></a></li>
-                            <li><a href="#"><span class="icon-instagram"></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="speaker ftco-animate speaker-1 d-flex align-items-center mb-5">
-                    <div class="img" style="background-image: url(images/staff-4.jpg);"></div>
-                    <div class="text pl-4">
-                        <h3>Alysa Derick</h3>
-                        <span class="position">Businesswoman</span>
-                        <p>A small river named Duden flows by their place and supplies</p>
-                        <ul class="ftco-social">
-                            <li><a href="#"><span class="icon-twitter"></span></a></li>
-                            <li><a href="#"><span class="icon-facebook"></span></a></li>
-                            <li><a href="#"><span class="icon-instagram"></span></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
-<section class="ftco-section-parallax ftco-section ftco-no-pt padding-top-bottom">
-    <div class="parallax-img d-flex align-items-center">
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-10 col-lg-7 text-center heading-section ftco-animate">
-                    <h2>Subcribe to our Newsletter</h2>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in</p>
-                    <div class="row d-flex justify-content-center mt-4">
-                        <div class="col-md-8">
-                            <form action="#" class="subscribe-form">
-                                <div class="form-group d-flex">
-                                    <input type="text" class="form-control" placeholder="Enter email address">
-                                    <input type="submit" value="Subscribe" class="submit px-3">
-                                </div>
-                            </form>
+    <section class="ftco-section-parallax ftco-section ftco-no-pt padding-top-bottom">
+        <div class="parallax-img d-flex align-items-center">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-10 col-lg-7 text-center heading-section ftco-animate">
+                        <h2>Subcribe to our Newsletter</h2>
+                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in</p>
+                        <div class="row d-flex justify-content-center mt-4">
+                            <div class="col-md-8">
+                                <form action="#" class="subscribe-form">
+                                    <div class="form-group d-flex">
+                                        <input type="text" class="form-control" placeholder="Enter email address">
+                                        <input type="submit" value="Subscribe" class="submit px-3">
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
 
 
 
-<!-- loader -->
-<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" /><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" /><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
 
-<script src="js/jquery.min.js" asp-append-version="true"></script>
-<script src="js/jquery-migrate-3.0.1.min.js" asp-append-version="true"></script>
-<script src="js/popper.min.js" asp-append-version="true"></script>
-<script src="js/bootstrap.min.js" asp-append-version="true"></script>
-<script src="js/jquery.easing.1.3.js" asp-append-version="true"></script>
-<script src="js/jquery.waypoints.min.js" asp-append-version="true"></script>
-<script src="js/jquery.stellar.min.js" asp-append-version="true"></script>
-<script src="js/owl.carousel.min.js" asp-append-version="true"></script>
-<script src="js/jquery.magnific-popup.min.js" asp-append-version="true"></script>
-<script src="js/aos.js" asp-append-version="true"></script>
-<script src="js/jquery.animateNumber.min.js" asp-append-version="true"></script>
-<script src="js/scrollax.min.js" asp-append-version="true"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false" asp-append-version="true"></script>
-<script src="js/google-map.js" asp-append-version="true"></script>
-<script src="js/main.js" asp-append-version="true"></script>
+    <script src="js/jquery.min.js" asp-append-version="true"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js" asp-append-version="true"></script>
+    <script src="js/popper.min.js" asp-append-version="true"></script>
+    <script src="js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="js/jquery.easing.1.3.js" asp-append-version="true"></script>
+    <script src="js/jquery.waypoints.min.js" asp-append-version="true"></script>
+    <script src="js/jquery.stellar.min.js" asp-append-version="true"></script>
+    <script src="js/owl.carousel.min.js" asp-append-version="true"></script>
+    <script src="js/jquery.magnific-popup.min.js" asp-append-version="true"></script>
+    <script src="js/aos.js" asp-append-version="true"></script>
+    <script src="js/jquery.animateNumber.min.js" asp-append-version="true"></script>
+    <script src="js/scrollax.min.js" asp-append-version="true"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false" asp-append-version="true"></script>
+    <script src="js/google-map.js" asp-append-version="true"></script>
+    <script src="js/main.js" asp-append-version="true"></script>

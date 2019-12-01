@@ -32,7 +32,12 @@ namespace MvcMovie.Controllers
             //}
             //return View(conference);
 
-            var mvcMovieContext = _context.Conference.Include(c => c.EventCenter).Include(c=> c.Parties);
+            var mvcMovieContext = _context.Conference
+                .Include(c => c.EventCenter)
+                .Include(c=> c.Parties)
+                .Include(c => c.Chats)
+                .Include(c => c.Dinners)
+                .Include(c => c.Talks);
             return View(await mvcMovieContext.ToListAsync());
 
         }
