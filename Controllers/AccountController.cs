@@ -34,6 +34,7 @@ namespace MvcMovie.Controllers
             var user = await context.User
                 .Include(b => b.Conferences)
                 .Include(b => b.AttendConferences)
+                .ThenInclude(attendConference => attendConference.Conference)
                 .Include(b => b.ConferenceNotifications)
                 .FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
 

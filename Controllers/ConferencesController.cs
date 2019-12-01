@@ -43,6 +43,7 @@ namespace MvcMovie.Controllers
                 .Include(c => c.EventCenter)
                 .Include(c => c.Repetitions)
                 .Include(c => c.Attendants)
+                .ThenInclude(attendant => attendant.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             var conferenceUser = await _context.ConferenceUser.FindAsync(currentUser.Id, conference.Id);
             if (conference == null)
