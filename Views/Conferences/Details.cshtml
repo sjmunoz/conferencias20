@@ -8,7 +8,14 @@
     <h1>Details</h1>
 
     <div>
-        <h4>Conference</h4>
+        <div class="row">
+            <div class="col-10">
+                <h4>Conference</h4>
+            </div>
+            <div class="col-2">
+                <h4> Attendants: @Model.Attendants.Count</h4>
+            </div>
+        </div>
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -53,90 +60,92 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.EventCenter.Name)
             </dd>
+            @{ if (Model.Repetitions.Count > 0) {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Repetitions)
+                Coming back on:
             </dt>
+                }
+            }
             <dd class="col-sm-10">
-                @{
-                    foreach (var repetitions in Model.Repetitions)
-                    {
-                        <text>
-                            <h5>Days: @repetitions.Day Months: @repetitions.Month Years: @repetitions.Year</h5>
-                            <br />
-                        </text>
-                    }
+                @{ if(@Model.Repetitions.Count > 0){ 
+                        foreach (var repetitions in Model.Repetitions)
+                        {
+                            <text>
+                            @repetitions.Day-@repetitions.Month-@repetitions.Year
+                            </text>
+                        }
+                   }
                 }
             </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Attendants)
-            </dt>
-            <dd class="col-sm-10">
-                @{
-                    foreach (var attendant in Model.Attendants)
-                    {
-                        <text>
-                            <h6> @attendant.User.Name @attendant.User.Lastname</h6>
-                            <br />
-                        </text>
-                    }
-                }
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Parties)
-            </dt>
-            <dd class="col-sm-10">
+
+            <div class="col-1"></div> 
+            <table id="myTable" class="col-10">
+                <tr>
+                    <th>Event Track</th>
+                    <th>Event Type</th>
+                    <th>Creator</th>
+                </tr>
                 @{
                     foreach (var party in Model.Parties)
                     {
-                        <text>
-                            <a href="/Parties/Details/@party.Id">@party.Id .- @party.Track </a>
-                            <br />
-                        </text>
+                        <tr onclick="window.location.href = '/Parties/Details/@party.Id';">
+                            <td>
+                                @party.Track
+                            </td>
+                            <td>
+                                Party
+                            </td>
+                            <td>
+                                @party.PersonId
+                            </td>
+                        </tr>
                     }
-                }
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Chats)
-            </dt>
-            <dd class="col-sm-10">
-                @{
+
                     foreach (var chat in Model.Chats)
                     {
-                        <text>
-                            <a href="/Chats/Details/@chat.Id">@chat.Id .- @chat.Track </a>
-                            <br />
-                        </text>
+                        <tr onclick="window.location.href = '/Chats/Details/@chat.Id';">
+                            <td>
+                                @chat.Track
+                            </td>
+                            <td>
+                                Chat
+                            </td>
+                            <td>
+                                @chat.PersonId
+                            </td>
+                        </tr>
                     }
-                }
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Dinners)
-            </dt>
-            <dd class="col-sm-10">
-                @{
                     foreach (var dinner in Model.Dinners)
                     {
-                        <text>
-                            <a href="/Dinners/Details/@dinner.Id">@dinner.Id .- @dinner.Track </a>
-                            <br />
-                        </text>
+                        <tr onclick="window.location.href = '/Dinners/Details/@dinner.Id';">
+                            <td>
+                                @dinner.Track
+                            </td>
+                            <td>
+                                Dinner
+                            </td>
+                            <td>
+                                @dinner.PersonId
+                            </td>
+                        </tr>
                     }
-                }
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Talks)
-            </dt>
-            <dd class="col-sm-10">
-                @{
                     foreach (var talk in Model.Talks)
                     {
-                        <text>
-                            <a href="/Talks/Details/@talk.Id">@talk.Id .- @talk.Track </a>
-                            <br />
-                        </text>
+                        <tr onclick="window.location.href = '/Dinners/Details/@talk.Id';">
+                            <td>
+                                @talk.Track
+                            </td>
+                            <td>
+                                Talk
+                            </td>
+                            <td>
+                                @talk.PersonId
+                            </td>
+                        </tr>
                     }
                 }
-            </dd>
+                
+            </table>
         </dl>
     </div>
     <div>
@@ -144,7 +153,7 @@
             if (ViewBag.conferenceUser != null)
             {
                 <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
-                    <button type="submit"  class="coolButton" id="button5">
+                    <button type="submit" class="coolButton" id="button5">
                         Unsubscribe
                     </button>
                 </form>
@@ -155,8 +164,8 @@
                     <button type="submit" class="coolButton" id="button5">
                         Subscribe
                     </button>
-                <a asp-action="Edit" asp-route-id="@Model.Id" id="button5" class="coolButton">Edit</a>
-                <a asp - action="Index" id="button5" class="coolButton float-right">Back to List</a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" id="button5" class="coolButton">Edit</a>
+                    <a asp - action="Index" id="button5" class="coolButton float-right">Back to List</a>
                 </form>
             }
             else
@@ -167,7 +176,7 @@
             if (ViewBag.currentUser.Id == @Model.UserId)
             {
                 <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
-                    <button type="submit"  class="coolButton" id="button5">
+                    <button type="submit" class="coolButton mt-1" id="button5">
                         Notification
                     </button>
                 </form>

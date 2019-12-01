@@ -23,15 +23,18 @@ namespace MvcMovie.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var conference = await _context.Conference
-                .Include(c => c.EventCenter)
-                .FirstOrDefaultAsync(c => c.Id == 1);
-            if (conference == null)
-            {
-                return NotFound();
-            }
+            //var conference = await _context.Conference
+            //    .Include(c => c.EventCenter)
+            //    .FirstOrDefaultAsync(c => c.Id == 1);
+            //if (conference == null)
+            //{
+            //    return NotFound();
+            //}
+            //return View(conference);
 
-            return View(conference);
+            var mvcMovieContext = _context.Conference.Include(c => c.EventCenter).Include(c=> c.Parties);
+            return View(await mvcMovieContext.ToListAsync());
+
         }
 
         public IActionResult Privacy()

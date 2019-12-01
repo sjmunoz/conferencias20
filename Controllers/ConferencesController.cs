@@ -21,7 +21,7 @@ namespace MvcMovie.Controllers
         // GET: Conferences
         public async Task<IActionResult> Index()
         {
-            var mvcMovieContext = _context.Conference.Include(b => b.User).Include(c => c.EventCenter);
+            var mvcMovieContext = _context.Conference.Include(c => c.EventCenter);
             return View(await mvcMovieContext.ToListAsync());
         }
 
