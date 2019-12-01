@@ -85,6 +85,14 @@
     </div>
     <div>
         @{
+            if (ViewBag.currentUser.Id == @Model.UserId)
+            {
+                <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
+                    <button type="submit"  class="coolButton mt-2 mb-2" id="button5">
+                        Notification
+                    </button>
+                </form>
+            }
             if (ViewBag.conferenceUser != null)
             {
                 <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
@@ -106,15 +114,6 @@
             else
             {
                 <h4>Esta conferencia esta llena!</h4>
-            }
-
-            if (ViewBag.currentUser.Id == @Model.UserId)
-            {
-                <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
-                    <button type="submit"  class="coolButton" id="button5">
-                        Notification
-                    </button>
-                </form>
             }
         }
 
