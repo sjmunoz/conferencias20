@@ -9,6 +9,7 @@
 
     <div>
         <h4>Conference</h4>
+        <a asp-action="AddParty" asp-route-id=@Model.Id>AddParty</a>
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -61,7 +62,7 @@
                     foreach (var repetitions in Model.Repetitions)
                     {
                         <text>
-                            <h5>Days: @repetitions.Day Months: @repetitions.Month Years: @repetitions.Year</h5>
+                            <p>Days: @repetitions.Day Months: @repetitions.Month Years: @repetitions.Year</p>
                             <br />
                         </text>
                     }
@@ -75,7 +76,7 @@
                     foreach (var attendant in Model.Attendants)
                     {
                         <text>
-                            <h6> @attendant.User.Name @attendant.User.Lastname</h6>
+                            <p> @attendant.User.Name @attendant.User.Lastname</p>
                             <br />
                         </text>
                     }
@@ -161,7 +162,7 @@
             }
             else
             {
-                <h4>Esta conferencia esta llena!</h4>
+                <h5>Esta conferencia esta llena!</h5>
             }
 
             if (ViewBag.currentUser.Id == @Model.UserId)

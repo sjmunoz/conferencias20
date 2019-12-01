@@ -56,6 +56,38 @@ namespace MvcMovie.Controllers
             return View(conference);
         }
 
+        // GET: AddParty/Create
+        public async Task<IActionResult> AddParty(int id)
+        {
+            //ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location").Where(item => item.Value != null).ToList();
+            var conference = await _context.Conference
+                .Include(c => c.EventCenter)
+                .ThenInclude(d => d.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            //ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location");
+            ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["ConferenceId"] = id;
+            return View();
+        }
+
+        // POST: AddParty/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddParty(int id, [Bind("RoomID,PersonId,EventDate,EndEventDate,Track")] Party party)
+        {
+
+            party.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(party);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(party);
+        }
+
         // GET: AddRepetition/Create
         public IActionResult AddRepetition(int id)
         {
