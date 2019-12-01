@@ -5,10 +5,9 @@
 }
 
 <div class="regular-crud">
-    <h1>Details</h1>
 
     <div>
-        <h4>My Profile</h4>
+        <h1>My Profile</h1>
         <dl class="row">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Name)
@@ -54,6 +53,26 @@
                                 <td><a asp-controller="Conferences" asp-action="Details" asp-route-id="@conference.Id"> @conference.Description </a> </td>
                             </tr>
                             <br />
+                        }
+                    }
+                </table>
+            </dd>
+        </dl>
+        <dl class="row">
+            <dd class="col-12">
+                <h4>Mis Fiestas</h4>
+            </dd>
+            <dd class="col-6">
+                <table id="myTable">
+                    <tr>
+                        <th>Fiestas</th>
+                    </tr>
+                    @{
+                        foreach (var party in Model.Parties)
+                        {
+                            <tr>
+                                <td><a asp-controller="Parties" asp-action="Details" asp-route-id="@party.Id"> @party.Track </a></td>
+                            </tr>
                         }
                     }
                 </table>
@@ -109,6 +128,31 @@
                                 </td>
                                 <td>
                                     @conferenceNotification.Message
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </dd>
+        </dl>
+
+        <dl class="row">
+            <dd class="col-12">
+
+                <h4>Fiestas a las que estoy suscrito</h4>
+            </dd>
+
+            <dd class="col-6">
+                <table id="myTable">
+                    <tr>
+                        <th>Party</th>
+                    </tr>
+                    @{
+                        foreach (var attendParty in Model.AttendParties)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Parties" asp-action="Details" asp-route-id="@attendParty.Party.Id"> @attendParty.Party.Track </a>
                                 </td>
                             </tr>
                         }

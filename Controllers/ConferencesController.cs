@@ -21,6 +21,8 @@ namespace MvcMovie.Controllers
         // GET: Conferences
         public async Task<IActionResult> Index()
         {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            ViewData["currentUser"] = currentUser;
             var mvcMovieContext = _context.Conference.Include(b => b.User).Include(c => c.EventCenter);
             return View(await mvcMovieContext.ToListAsync());
         }
@@ -43,6 +45,7 @@ namespace MvcMovie.Controllers
                 .Include(c => c.EventCenter)
                 .Include(c => c.Repetitions)
                 .Include(c => c.Attendants)
+                .ThenInclude(attendant => attendant.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             var conferenceUser = await _context.ConferenceUser.FindAsync(currentUser.Id, conference.Id);
             if (conference == null)
@@ -52,7 +55,6 @@ namespace MvcMovie.Controllers
 
             ViewData["conferenceUser"] = conferenceUser;
             ViewData["currentUser"] = currentUser;
-            ViewData["available"] = conference.Attendants.Count - conference.Spots;
             return View(conference);
         }
 
@@ -84,9 +86,8 @@ namespace MvcMovie.Controllers
             {
                 _context.Add(party);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            return View(party);
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: AddRepetition/Create
@@ -117,7 +118,6 @@ namespace MvcMovie.Controllers
         // GET: Conferences/Create
         public IActionResult Create()
         {
-            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id");
             ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name");
             return View();
         }
@@ -138,7 +138,7 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
+            ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name", conference.EventCenterId);
             return View(conference);
         }
 
@@ -155,7 +155,7 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
+            ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name", conference.EventCenterId);
             return View(conference);
         }
 
@@ -191,7 +191,7 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
+            ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name", conference.EventCenterId);
             return View(conference);
         }
 
