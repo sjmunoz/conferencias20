@@ -21,7 +21,7 @@ namespace MvcMovie.Controllers
         // GET: Talks
         public async Task<IActionResult> Index()
         {
-            var mvcMovieContext = _context.Talk.Include(t => t.Conference).Include(t => t.Room);
+            var mvcMovieContext = _context.Talk.Include(t => t.Conference).Include(t => t.Room).Include(b => b.User);
             return View(await mvcMovieContext.ToListAsync());
         }
 
@@ -50,6 +50,7 @@ namespace MvcMovie.Controllers
         {
             ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Name");
             ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location");
+            ViewData["Talkers"] = new SelectList(_context.User, "UserName", "UserName");
             return View();
         }
 
@@ -58,8 +59,11 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Resources,TalkerId,Id,RoomID,ConferenceId,PersonId,EventDate,EndEventDate,Track")] Talk talk)
+        public async Task<IActionResult> Create([Bind("Resources,Talker,Id,RoomID,ConferenceId,EventDate,EndEventDate,Track")] Talk talk)
         {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            talk.UserId = currentUser.Id;
+
             if (ModelState.IsValid)
             {
                 _context.Add(talk);
@@ -68,6 +72,7 @@ namespace MvcMovie.Controllers
             }
             ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", talk.ConferenceId);
             ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", talk.RoomID);
+            ViewData["Talkers"] = new SelectList(_context.User, "UserName", "UserName", talk.Talker);
             return View(talk);
         }
 
@@ -86,6 +91,7 @@ namespace MvcMovie.Controllers
             }
             ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", talk.ConferenceId);
             ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", talk.RoomID);
+            ViewData["Talkers"] = new SelectList(_context.User, "UserName", "UserName", talk.Talker);
             return View(talk);
         }
 
@@ -94,7 +100,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Resources,TalkerId,Id,RoomID,ConferenceId,PersonId,EventDate,EndEventDate,Track")] Talk talk)
+        public async Task<IActionResult> Edit(int id, [Bind("Resources,Talker,Id,RoomID,ConferenceId,EventDate,EndEventDate,Track, UserId")] Talk talk)
         {
             if (id != talk.Id)
             {
@@ -123,6 +129,7 @@ namespace MvcMovie.Controllers
             }
             ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", talk.ConferenceId);
             ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", talk.RoomID);
+            ViewData["Talkers"] = new SelectList(_context.User, "UserName", "UserName", talk.Talker);
             return View(talk);
         }
 
