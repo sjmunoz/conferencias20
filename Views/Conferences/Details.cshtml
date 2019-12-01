@@ -60,7 +60,7 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.EventCenter.Name)
             </dd>
-            @{ if (Model.Repetitions.Count > 0) {
+            @*@{ if (Model.Repetitions.Count > 0) {*@
             <dt class="col-sm-2">
                 Coming back on:
             </dt>
@@ -74,7 +74,7 @@
                         </text>
                     }
                 }
-            }
+            </dd>
             <dd class="col-sm-10">
                 @{
                     foreach (var attendant in Model.Attendants)
@@ -105,7 +105,7 @@
                                 Party
                             </td>
                             <td>
-                                @party.PersonId
+                                @party.UserId
                             </td>
                         </tr>
                     }
@@ -120,7 +120,7 @@
                                 Chat
                             </td>
                             <td>
-                                @chat.PersonId
+                                @chat.UserId
                             </td>
                         </tr>
                     }
@@ -134,7 +134,7 @@
                                 Dinner
                             </td>
                             <td>
-                                @dinner.PersonId
+                                @dinner.UserId
                             </td>
                         </tr>
                     }
@@ -148,7 +148,7 @@
                                 Talk
                             </td>
                             <td>
-                                @talk.PersonId
+                                @talk.UserId
                             </td>
                         </tr>
                     }
