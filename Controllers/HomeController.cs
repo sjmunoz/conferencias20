@@ -6,15 +6,35 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MvcMovie.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace MvcMovie.Controllers
 {
     public class HomeController : Controller
     {
-        [AllowAnonymous]
-        public IActionResult Index()
+
+        private readonly MvcMovieContext _context;
+
+        public HomeController(MvcMovieContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Index()
+        {
+            //var conference = await _context.Conference
+            //    .Include(c => c.EventCenter)
+            //    .FirstOrDefaultAsync(c => c.Id == 1);
+            //if (conference == null)
+            //{
+            //    return NotFound();
+            //}
+            //return View(conference);
+
+            var mvcMovieContext = _context.Conference.Include(c => c.EventCenter).Include(c=> c.Parties);
+            return View(await mvcMovieContext.ToListAsync());
+
         }
 
         public IActionResult Privacy()

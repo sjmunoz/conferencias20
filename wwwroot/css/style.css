@@ -9755,6 +9755,7 @@ textarea.form-control {
     border-collapse: collapse;
     width: 100%;
     border: 1px solid #ddd;
+    cursor: pointer;
 }
 
     #myTable td, #customers th {
@@ -9767,7 +9768,7 @@ textarea.form-control {
     }
 
     #myTable tr:hover {
-        background-color: #ddd;
+        background-color: #ddd
     }
 
     #myTable a{
