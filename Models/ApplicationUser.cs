@@ -14,6 +14,11 @@ namespace MvcMovie.Models
         public string Career { get; set; }
 
         public virtual ICollection<Conference> Conferences { get; set; }
+        public virtual ICollection<Party> Parties { get; set; }
+        public virtual ICollection<Chat> Chats { get; set; }
+        public virtual ICollection<Dinner> Dinners { get; set; }
+        public virtual ICollection<Talk> Talks { get; set; }
+
         public virtual ICollection<ConferenceUser> AttendConferences { get; set; }
 
         public virtual ICollection<ConferenceNotification> ConferenceNotifications { get; set; }
