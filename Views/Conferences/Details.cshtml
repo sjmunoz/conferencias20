@@ -82,6 +82,62 @@
                     }
                 }
             </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Parties)
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    foreach (var party in Model.Parties)
+                    {
+                        <text>
+                            <a href="/Parties/Details/@party.Id">@party.Id .- @party.Track </a>
+                            <br />
+                        </text>
+                    }
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Chats)
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    foreach (var chat in Model.Chats)
+                    {
+                        <text>
+                            <a href="/Chats/Details/@chat.Id">@chat.Id .- @chat.Track </a>
+                            <br />
+                        </text>
+                    }
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Dinners)
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    foreach (var dinner in Model.Dinners)
+                    {
+                        <text>
+                            <a href="/Dinners/Details/@dinner.Id">@dinner.Id .- @dinner.Track </a>
+                            <br />
+                        </text>
+                    }
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Talks)
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    foreach (var talk in Model.Talks)
+                    {
+                        <text>
+                            <a href="/Talks/Details/@talk.Id">@talk.Id .- @talk.Track </a>
+                            <br />
+                        </text>
+                    }
+                }
+            </dd>
         </dl>
     </div>
     <div>
