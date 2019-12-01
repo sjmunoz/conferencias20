@@ -36,11 +36,18 @@ namespace MvcMovie.Controllers
             var party = await _context.Party
                 .Include(p => p.Conference)
                 .Include(p => p.Room)
+                .Include(p => p.Attendants)
+                .ThenInclude(attendant => attendant.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (party == null)
             {
                 return NotFound();
             }
+
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var partyUser = await _context.PartyUser.FindAsync(currentUser.Id, party.Id);
+            ViewData["partyUser"] = partyUser;
+            ViewData["currentUser"] = currentUser;
 
             return View(party);
         }
@@ -155,6 +162,43 @@ namespace MvcMovie.Controllers
             _context.Party.Remove(party);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // SUBSCRIBIR USUARIO
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAttendant(int id)
+        {
+            var party = await _context.Party.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (party == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var partyUser = new PartyUser();
+            partyUser.Party = party;
+            partyUser.User = currentUser;
+            if (ModelState.IsValid)
+            {
+                _context.Add(partyUser);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAttendant(int id)
+        {
+            var party = await _context.Party.FindAsync(id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var partyUser = await _context.PartyUser.FindAsync(currentUser.Id, party.Id);
+
+            _context.PartyUser.Remove(partyUser);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
         }
 
         private bool PartyExists(int id)

@@ -60,6 +60,8 @@
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item down-nav-item"><a href="/conferences" class="nav-link">Conferences</a></li>
+                    <li class="nav-item down-nav-item"><a href="/eventcenters" class="nav-link">Event Centers</a></li>
+                    <li class="nav-item down-nav-item"><a href="/rooms" class="nav-link">Rooms</a></li>
                     <li class="nav-item down-nav-item"><a href="/parties" class="nav-link">Parties</a></li>
                     <li class="nav-item down-nav-item"><a href="/chats" class="nav-link">Chats</a></li>
                     <li class="nav-item down-nav-item"><a href="/dinners" class="nav-link">Dinners</a></li>
@@ -67,8 +69,8 @@
                     @if (signInManager.IsSignedIn(User))
                     {
                         <li class="nav-item2">
-                            <form class = "nav-link" method="post" asp-action="Logout" asp-controller="Account">
-                                <button type="submit" class= "coolButton" id="button5">
+                            <form class="nav-link" method="post" asp-action="Logout" asp-controller="Account">
+                                <button type="submit" class="coolButton" id="button5">
                                     Logout
                                 </button>
                             </form>

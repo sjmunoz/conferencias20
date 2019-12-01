@@ -21,7 +21,9 @@ namespace MvcMovie.Controllers
         // GET: Conferences
         public async Task<IActionResult> Index()
         {
-            var mvcMovieContext = _context.Conference.Include(c => c.EventCenter);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            ViewData["currentUser"] = currentUser;
+            var mvcMovieContext = _context.Conference.Include(b => b.User).Include(c => c.EventCenter);
             return View(await mvcMovieContext.ToListAsync());
         }
 
@@ -43,6 +45,7 @@ namespace MvcMovie.Controllers
                 .Include(c => c.EventCenter)
                 .Include(c => c.Repetitions)
                 .Include(c => c.Attendants)
+                .ThenInclude(attendant => attendant.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             var conferenceUser = await _context.ConferenceUser.FindAsync(currentUser.Id, conference.Id);
             if (conference == null)
@@ -52,8 +55,38 @@ namespace MvcMovie.Controllers
 
             ViewData["conferenceUser"] = conferenceUser;
             ViewData["currentUser"] = currentUser;
-            ViewData["available"] = conference.Attendants.Count - conference.Spots;
             return View(conference);
+        }
+
+        // GET: AddParty/Create
+        public async Task<IActionResult> AddParty(int id)
+        {
+            //ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location").Where(item => item.Value != null).ToList();
+            var conference = await _context.Conference
+                .Include(c => c.EventCenter)
+                .ThenInclude(d => d.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            //ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location");
+            ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["ConferenceId"] = id;
+            return View();
+        }
+
+        // POST: AddParty/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddParty(int id, [Bind("RoomID,PersonId,EventDate,EndEventDate,Track")] Party party)
+        {
+
+            party.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(party);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: AddRepetition/Create
@@ -84,7 +117,6 @@ namespace MvcMovie.Controllers
         // GET: Conferences/Create
         public IActionResult Create()
         {
-            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id");
             ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name");
             return View();
         }
@@ -105,7 +137,7 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
+            ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name", conference.EventCenterId);
             return View(conference);
         }
 
@@ -122,7 +154,7 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
+            ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name", conference.EventCenterId);
             return View(conference);
         }
 
@@ -158,7 +190,7 @@ namespace MvcMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventCenterId"] = new SelectList(_context.EventCenter, "Id", "Id", conference.EventCenterId);
+            ViewData["EventCenterName"] = new SelectList(_context.EventCenter, "Id", "Name", conference.EventCenterId);
             return View(conference);
         }
 
