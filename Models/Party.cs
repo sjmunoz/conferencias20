@@ -23,5 +23,7 @@ namespace MvcMovie.Models
         public ApplicationUser User { get; set; }
         public virtual Room Room { get; set; }
         public virtual Conference Conference { get; set; }
+
+        public virtual ICollection<PartyUser> Attendants { get; set; }
     }
 }

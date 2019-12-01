@@ -33,9 +33,12 @@ namespace MvcMovie.Controllers
 
             var user = await context.User
                 .Include(b => b.Conferences)
+                .Include(b => b.Parties)
                 .Include(b => b.AttendConferences)
                 .ThenInclude(attendConference => attendConference.Conference)
                 .Include(b => b.ConferenceNotifications)
+                .Include(b => b.AttendParties)
+                .ThenInclude(attendParty => attendParty.Party)
                 .FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
 
             return View(user);

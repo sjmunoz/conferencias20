@@ -9,7 +9,6 @@
 
     <div>
         <h4>Conference</h4>
-        <a asp-action="AddParty" asp-route-id=@Model.Id>AddParty</a>
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -145,7 +144,7 @@
             if (ViewBag.conferenceUser != null)
             {
                 <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
-                    <button type="submit"  class="coolButton" id="button5">
+                    <button type="submit" class="coolButton" id="button5">
                         Unsubscribe
                     </button>
                 </form>
@@ -156,8 +155,6 @@
                     <button type="submit" class="coolButton" id="button5">
                         Subscribe
                     </button>
-                <a asp-action="Edit" asp-route-id="@Model.Id" id="button5" class="coolButton">Edit</a>
-                <a asp - action="Index" id="button5" class="coolButton float-right">Back to List</a>
                 </form>
             }
             else
@@ -167,12 +164,16 @@
 
             if (ViewBag.currentUser.Id == @Model.UserId)
             {
+                <a asp-action="Edit" asp-route-id="@Model.Id" id="button5" class="coolButton">Edit</a>
                 <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
-                    <button type="submit"  class="coolButton" id="button5">
+                    <button type="submit" class="coolButton" id="button5">
                         Notification
                     </button>
                 </form>
+                <a asp-action="AddParty" asp-route-id=@Model.Id class="coolButton">AddParty</a>
             }
+
+            <a asp-action="Index" id="button5" class="coolButton float-right">Back to List</a>
         }
 
     </div>
