@@ -28,7 +28,7 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Conferences/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string searchstring)
         {
             if (id == null)
             {
@@ -55,6 +55,8 @@ namespace MvcMovie.Controllers
 
             ViewData["conferenceUser"] = conferenceUser;
             ViewData["currentUser"] = currentUser;
+            ViewData["searchstring"] = "";
+            if (searchstring != null) { ViewData["searchstring"] = searchstring; }
             return View(conference);
         }
 
