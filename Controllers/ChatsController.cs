@@ -21,7 +21,10 @@ namespace MvcMovie.Controllers
         // GET: Chats
         public async Task<IActionResult> Index()
         {
-            var mvcMovieContext = _context.Chat.Include(c => c.Conference).Include(c => c.Room);
+            var mvcMovieContext = _context.Chat
+                .Include(c => c.Conference)
+                .Include(c => c.Room)
+                .Include(b => b.User);
             return View(await mvcMovieContext.ToListAsync());
         }
 
@@ -36,11 +39,18 @@ namespace MvcMovie.Controllers
             var chat = await _context.Chat
                 .Include(c => c.Conference)
                 .Include(c => c.Room)
+                .Include(p => p.Attendants)
+                .ThenInclude(attendant => attendant.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (chat == null)
             {
                 return NotFound();
             }
+
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var chatUser = await _context.ChatUser.FindAsync(currentUser.Id, chat.Id);
+            ViewData["chatUser"] = chatUser;
+            ViewData["currentUser"] = currentUser;
 
             return View(chat);
         }
@@ -157,6 +167,43 @@ namespace MvcMovie.Controllers
             _context.Chat.Remove(chat);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // SUBSCRIBIR USUARIO
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAttendant(int id)
+        {
+            var chat = await _context.Chat.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (chat == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var chatUser = new ChatUser();
+            chatUser.Chat = chat;
+            chatUser.User = currentUser;
+            if (ModelState.IsValid)
+            {
+                _context.Add(chatUser);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAttendant(int id)
+        {
+            var chat = await _context.Chat.FindAsync(id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var chatUser = await _context.ChatUser.FindAsync(currentUser.Id, chat.Id);
+
+            _context.ChatUser.Remove(chatUser);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
         }
 
         private bool ChatExists(int id)

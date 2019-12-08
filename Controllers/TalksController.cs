@@ -21,7 +21,10 @@ namespace MvcMovie.Controllers
         // GET: Talks
         public async Task<IActionResult> Index()
         {
-            var mvcMovieContext = _context.Talk.Include(t => t.Conference).Include(t => t.Room).Include(b => b.User);
+            var mvcMovieContext = _context.Talk
+                .Include(t => t.Conference)
+                .Include(t => t.Room)
+                .Include(b => b.User);
             return View(await mvcMovieContext.ToListAsync());
         }
 
@@ -36,11 +39,27 @@ namespace MvcMovie.Controllers
             var talk = await _context.Talk
                 .Include(t => t.Conference)
                 .Include(t => t.Room)
+                .Include(p => p.Attendants)
+                .ThenInclude(attendant => attendant.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (talk == null)
             {
                 return NotFound();
             }
+
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var talkUser = await _context.TalkUser.FindAsync(currentUser.Id, talk.Id);
+
+            var averageRating = 0;
+            foreach (var attendant in talk.Attendants)
+            {
+                averageRating += attendant.Rating.Value;
+            }
+            averageRating = averageRating / talk.Attendants.Count;
+
+            ViewData["talkUser"] = talkUser;
+            ViewData["currentUser"] = currentUser;
+            ViewData["averageRating"] = averageRating;
 
             return View(talk);
         }
@@ -162,6 +181,68 @@ namespace MvcMovie.Controllers
             _context.Talk.Remove(talk);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // SUBSCRIBIR USUARIO
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAttendant(int id)
+        {
+            var talk = await _context.Talk.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (talk == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var talkUser = new TalkUser();
+            talkUser.Talk = talk;
+            talkUser.User = currentUser;
+            if (ModelState.IsValid)
+            {
+                _context.Add(talkUser);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAttendant(int id)
+        {
+            var talk = await _context.Talk.FindAsync(id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var talkUser = await _context.TalkUser.FindAsync(currentUser.Id, talk.Id);
+
+            _context.TalkUser.Remove(talkUser);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        public IActionResult giveRating(int id)
+        {
+            ViewData["TalkId"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> giveRating(int id, [Bind("Rating")] TalkUser talkUser)
+        {
+            var talk = await _context.Talk.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (talk == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var attendant = await _context.TalkUser.FindAsync(currentUser.Id, talk.Id);
+            attendant.Rating = talkUser.Rating;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = id });
         }
 
         private bool TalkExists(int id)

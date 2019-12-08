@@ -3,6 +3,33 @@
 @{
     ViewData["Title"] = "Details";
 }
+
+<script type="text/javascript">
+
+    google.charts.load('current', {
+        packages: ['corechart', 'bar']
+    });
+
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Event', 'Attendants'],
+            ['Parties', @ViewBag.partyAttendants],
+            ['Dinners', @ViewBag.dinnerAttendants],
+            ['Chats', @ViewBag.chatAttendants],
+            ['Talks', @ViewBag.talkAttendants],
+        ]);
+
+        var options = {
+            title: 'Asistentes por tipo de evento',
+            pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+    }
+</script>
+
 <div class="regular-crud">
 
     <h1>
@@ -61,6 +88,7 @@
                 }
             </div>
         </div>
+        <div id="donutchart" style="width: 900px; height: 500px;"></div>
         <hr />
         <dl class="row">
             <dd class="col-12">
@@ -146,7 +174,7 @@
                 }
             </dd>
 
-            <div class="col-1"></div> 
+            <div class="col-1"></div>
             <table id="myTable" class="col-10">
                 <form asp-controller="Conferences" asp-action="Details" >
                     <div class="col-10">
@@ -216,9 +244,10 @@
                     }
                     foreach (var talk in Model.Talks)
                     {
+
                         if (@talk.Track.Contains(ViewBag.searchstring))
                         {
-                            <tr onclick="window.location.href = '/Dinners/Details/@talk.Id';">
+                            <tr onclick="window.location.href = '/Talks/Details/@talk.Id';">
                                 <td>
                                     @talk.Track
                                 </td>

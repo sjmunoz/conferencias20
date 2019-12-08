@@ -21,7 +21,10 @@ namespace MvcMovie.Controllers
         // GET: Parties
         public async Task<IActionResult> Index()
         {
-            var mvcMovieContext = _context.Party.Include(p => p.Conference).Include(p => p.Room);
+            var mvcMovieContext = _context.Party
+                .Include(p => p.Conference)
+                .Include(p => p.Room)
+                .Include(b => b.User);
             return View(await mvcMovieContext.ToListAsync());
         }
 

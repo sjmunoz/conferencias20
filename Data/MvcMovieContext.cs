@@ -40,6 +40,39 @@ namespace MvcMovie.Models
                 .HasOne(bc => bc.Party)
                 .WithMany(c => c.Attendants)
                 .HasForeignKey(bc => bc.PartyId);
+
+            modelBuilder.Entity<TalkUser>()
+                .HasKey(bc => new { bc.UserId, bc.TalkId });
+            modelBuilder.Entity<TalkUser>()
+                .HasOne(bc => bc.User)
+                .WithMany(b => b.AttendTalks)
+                .HasForeignKey(bc => bc.UserId);
+            modelBuilder.Entity<TalkUser>()
+                .HasOne(bc => bc.Talk)
+                .WithMany(c => c.Attendants)
+                .HasForeignKey(bc => bc.TalkId);
+
+            modelBuilder.Entity<ChatUser>()
+                .HasKey(bc => new { bc.UserId, bc.ChatId });
+            modelBuilder.Entity<ChatUser>()
+                .HasOne(bc => bc.User)
+                .WithMany(b => b.AttendChats)
+                .HasForeignKey(bc => bc.UserId);
+            modelBuilder.Entity<ChatUser>()
+                .HasOne(bc => bc.Chat)
+                .WithMany(c => c.Attendants)
+                .HasForeignKey(bc => bc.ChatId);
+
+            modelBuilder.Entity<DinnerUser>()
+                .HasKey(bc => new { bc.UserId, bc.DinnerId });
+            modelBuilder.Entity<DinnerUser>()
+                .HasOne(bc => bc.User)
+                .WithMany(b => b.AttendDinners)
+                .HasForeignKey(bc => bc.UserId);
+            modelBuilder.Entity<DinnerUser>()
+                .HasOne(bc => bc.Dinner)
+                .WithMany(c => c.Attendants)
+                .HasForeignKey(bc => bc.DinnerId);
         }
 
         public DbSet<MvcMovie.Models.Conference> Conference { get; set; }
@@ -67,5 +100,8 @@ namespace MvcMovie.Models
         public DbSet<MvcMovie.Models.ConferenceNotification> ConferenceNotification { get; set; }
 
         public DbSet<MvcMovie.Models.PartyUser> PartyUser { get; set; }
+        public DbSet<MvcMovie.Models.TalkUser> TalkUser { get; set; }
+        public DbSet<MvcMovie.Models.ChatUser> ChatUser { get; set; }
+        public DbSet<MvcMovie.Models.DinnerUser> DinnerUser { get; set; }
     }
 }

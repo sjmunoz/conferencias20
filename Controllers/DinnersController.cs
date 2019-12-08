@@ -21,7 +21,10 @@ namespace MvcMovie.Controllers
         // GET: Dinners
         public async Task<IActionResult> Index()
         {
-            var mvcMovieContext = _context.Dinner.Include(d => d.Conference).Include(d => d.Room);
+            var mvcMovieContext = _context.Dinner
+                .Include(d => d.Conference)
+                .Include(d => d.Room)
+                .Include(b => b.User);
             return View(await mvcMovieContext.ToListAsync());
         }
 
@@ -36,11 +39,18 @@ namespace MvcMovie.Controllers
             var dinner = await _context.Dinner
                 .Include(d => d.Conference)
                 .Include(d => d.Room)
+                .Include(p => p.Attendants)
+                .ThenInclude(attendant => attendant.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dinner == null)
             {
                 return NotFound();
             }
+
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var dinnerUser = await _context.DinnerUser.FindAsync(currentUser.Id, dinner.Id);
+            ViewData["dinnerUser"] = dinnerUser;
+            ViewData["currentUser"] = currentUser;
 
             return View(dinner);
         }
@@ -157,6 +167,43 @@ namespace MvcMovie.Controllers
             _context.Dinner.Remove(dinner);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // SUBSCRIBIR USUARIO
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAttendant(int id)
+        {
+            var dinner = await _context.Dinner.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (dinner == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var dinnerUser = new DinnerUser();
+            dinnerUser.Dinner = dinner;
+            dinnerUser.User = currentUser;
+            if (ModelState.IsValid)
+            {
+                _context.Add(dinnerUser);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAttendant(int id)
+        {
+            var dinner = await _context.Dinner.FindAsync(id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            var dinnerUser = await _context.DinnerUser.FindAsync(currentUser.Id, dinner.Id);
+
+            _context.DinnerUser.Remove(dinnerUser);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
         }
 
         private bool DinnerExists(int id)

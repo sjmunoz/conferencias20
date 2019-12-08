@@ -38,9 +38,13 @@ namespace MvcMovie.Controllers
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             var conference = await _context.Conference
                 .Include(b => b.Parties)
+                .ThenInclude(party => party.Attendants)
                 .Include(b => b.Talks)
+                .ThenInclude(talk => talk.Attendants)
                 .Include(b => b.Chats)
+                .ThenInclude(chat => chat.Attendants)
                 .Include(b => b.Dinners)
+                .ThenInclude(dinner => dinner.Attendants)
                 .Include(b => b.User)
                 .Include(c => c.EventCenter)
                 .Include(c => c.Repetitions)
@@ -53,6 +57,34 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
+            var partyAttendants = 0;
+            foreach (var party in conference.Parties)
+            {
+                partyAttendants += party.Attendants.Count;
+            }
+
+            var dinnerAttendants = 0;
+            foreach (var dinner in conference.Dinners)
+            {
+                dinnerAttendants += dinner.Attendants.Count;
+            }
+
+            var talkAttendants = 0;
+            foreach (var talk in conference.Talks)
+            {
+                talkAttendants += talk.Attendants.Count;
+            }
+
+            var chatAttendants = 0;
+            foreach (var chat in conference.Chats)
+            {
+                chatAttendants += chat.Attendants.Count;
+            }
+
+            ViewData["partyAttendants"] = partyAttendants;
+            ViewData["dinnerAttendants"] = dinnerAttendants;
+            ViewData["talkAttendants"] = talkAttendants;
+            ViewData["chatAttendants"] = chatAttendants;
             ViewData["conferenceUser"] = conferenceUser;
             ViewData["currentUser"] = currentUser;
             ViewData["searchstring"] = "";

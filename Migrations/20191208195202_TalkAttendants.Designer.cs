@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcMovie.Models;
 
 namespace MvcMovie.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    partial class MvcMovieContextModelSnapshot : ModelSnapshot
+    [Migration("20191208195202_TalkAttendants")]
+    partial class TalkAttendants
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,21 +221,6 @@ namespace MvcMovie.Migrations
                     b.ToTable("Chat");
                 });
 
-            modelBuilder.Entity("MvcMovie.Models.ChatUser", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("ChatId");
-
-                    b.Property<int?>("Rating");
-
-                    b.HasKey("UserId", "ChatId");
-
-                    b.HasIndex("ChatId");
-
-                    b.ToTable("ChatUser");
-                });
-
             modelBuilder.Entity("MvcMovie.Models.Conference", b =>
                 {
                     b.Property<int>("Id")
@@ -330,21 +317,6 @@ namespace MvcMovie.Migrations
                     b.ToTable("Dinner");
                 });
 
-            modelBuilder.Entity("MvcMovie.Models.DinnerUser", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("DinnerId");
-
-                    b.Property<int?>("Rating");
-
-                    b.HasKey("UserId", "DinnerId");
-
-                    b.HasIndex("DinnerId");
-
-                    b.ToTable("DinnerUser");
-                });
-
             modelBuilder.Entity("MvcMovie.Models.EventCenter", b =>
                 {
                     b.Property<int>("Id")
@@ -400,8 +372,6 @@ namespace MvcMovie.Migrations
                     b.Property<string>("UserId");
 
                     b.Property<int>("PartyId");
-
-                    b.Property<int?>("Rating");
 
                     b.HasKey("UserId", "PartyId");
 
@@ -506,8 +476,6 @@ namespace MvcMovie.Migrations
 
                     b.Property<int>("TalkId");
 
-                    b.Property<int?>("Rating");
-
                     b.HasKey("UserId", "TalkId");
 
                     b.HasIndex("TalkId");
@@ -576,19 +544,6 @@ namespace MvcMovie.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("MvcMovie.Models.ChatUser", b =>
-                {
-                    b.HasOne("MvcMovie.Models.Chat", "Chat")
-                        .WithMany("Attendants")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MvcMovie.Models.ApplicationUser", "User")
-                        .WithMany("AttendChats")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("MvcMovie.Models.Conference", b =>
                 {
                     b.HasOne("MvcMovie.Models.EventCenter", "EventCenter")
@@ -640,19 +595,6 @@ namespace MvcMovie.Migrations
                     b.HasOne("MvcMovie.Models.ApplicationUser", "User")
                         .WithMany("Dinners")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("MvcMovie.Models.DinnerUser", b =>
-                {
-                    b.HasOne("MvcMovie.Models.Dinner", "Dinner")
-                        .WithMany("Attendants")
-                        .HasForeignKey("DinnerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MvcMovie.Models.ApplicationUser", "User")
-                        .WithMany("AttendDinners")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MvcMovie.Models.Party", b =>
