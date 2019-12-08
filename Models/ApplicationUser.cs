@@ -24,5 +24,7 @@ namespace MvcMovie.Models
         public virtual ICollection<ConferenceNotification> ConferenceNotifications { get; set; }
 
         public virtual ICollection<PartyUser> AttendParties { get; set; }
+        public virtual ICollection<TalkUser> AttendTalks { get; set; }
+
     }
 }

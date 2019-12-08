@@ -40,6 +40,17 @@ namespace MvcMovie.Models
                 .HasOne(bc => bc.Party)
                 .WithMany(c => c.Attendants)
                 .HasForeignKey(bc => bc.PartyId);
+
+            modelBuilder.Entity<TalkUser>()
+                .HasKey(bc => new { bc.UserId, bc.TalkId });
+            modelBuilder.Entity<TalkUser>()
+                .HasOne(bc => bc.User)
+                .WithMany(b => b.AttendTalks)
+                .HasForeignKey(bc => bc.UserId);
+            modelBuilder.Entity<TalkUser>()
+                .HasOne(bc => bc.Talk)
+                .WithMany(c => c.Attendants)
+                .HasForeignKey(bc => bc.TalkId);
         }
 
         public DbSet<MvcMovie.Models.Conference> Conference { get; set; }
@@ -67,5 +78,6 @@ namespace MvcMovie.Models
         public DbSet<MvcMovie.Models.ConferenceNotification> ConferenceNotification { get; set; }
 
         public DbSet<MvcMovie.Models.PartyUser> PartyUser { get; set; }
+        public DbSet<MvcMovie.Models.TalkUser> TalkUser { get; set; }
     }
 }
