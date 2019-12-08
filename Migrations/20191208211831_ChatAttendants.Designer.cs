@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcMovie.Models;
 
 namespace MvcMovie.Migrations
 {
     [DbContext(typeof(MvcMovieContext))]
-    partial class MvcMovieContextModelSnapshot : ModelSnapshot
+    [Migration("20191208211831_ChatAttendants")]
+    partial class ChatAttendants
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -328,19 +330,6 @@ namespace MvcMovie.Migrations
                     b.ToTable("Dinner");
                 });
 
-            modelBuilder.Entity("MvcMovie.Models.DinnerUser", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("DinnerId");
-
-                    b.HasKey("UserId", "DinnerId");
-
-                    b.HasIndex("DinnerId");
-
-                    b.ToTable("DinnerUser");
-                });
-
             modelBuilder.Entity("MvcMovie.Models.EventCenter", b =>
                 {
                     b.Property<int>("Id")
@@ -632,19 +621,6 @@ namespace MvcMovie.Migrations
                     b.HasOne("MvcMovie.Models.ApplicationUser", "User")
                         .WithMany("Dinners")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("MvcMovie.Models.DinnerUser", b =>
-                {
-                    b.HasOne("MvcMovie.Models.Dinner", "Dinner")
-                        .WithMany("Attendants")
-                        .HasForeignKey("DinnerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MvcMovie.Models.ApplicationUser", "User")
-                        .WithMany("AttendDinners")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MvcMovie.Models.Party", b =>
