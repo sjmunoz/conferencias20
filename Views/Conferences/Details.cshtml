@@ -5,65 +5,118 @@
 }
 <div class="regular-crud">
 
-    <h1>Details</h1>
+    <h1>
+        @Model.Name
+    </h1>
 
     <div>
         <div class="row">
-            <div class="col-10">
+            <div class="col-6">
                 <h4>Conference</h4>
             </div>
             <div class="col-2">
-                <h4> Attendants: @Model.Attendants.Count</h4>
+                @{
+                    if (ViewBag.currentUser.Id == @Model.UserId)
+                    {
+                        <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
+                            <button type="submit" class="coolButton" id="button5">
+                                Send Message
+                            </button>
+                        </form>
+                    }
+                }
+            </div>
+            <div class="col-2">
+                @{
+                    if (ViewBag.currentUser.Id == @Model.UserId)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id" id="button5" class="coolButton float-right">Edit</a>
+                        
+                    }
+                }
+
+            </div>
+            <div class="col-2">
+                @{
+                    if (ViewBag.conferenceUser != null)
+                    {
+                        <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
+                            <button type="submit" class="coolButton" id="button5">
+                                Unsubscribe
+                            </button>
+                        </form>
+                    }
+                    else if (@Model.Attendants.Count < @Model.Spots)
+                    {
+                        <form method="post" asp-action="AddAttendant" asp-route-id="@Model.Id">
+                            <button type="submit" class="coolButton" id="button5">
+                                Subscribe
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <h5>Esta conferencia esta llena!</h5>
+                    }
+                }
             </div>
         </div>
         <hr />
         <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Name)
+            <dd class="col-12">
+                @{
+                    var eventDate = Model.ReleaseDate.ToString("MMMM dd yyyy");
+                }
+                <p class="float-right">
+                    <span class="icon-calendar"></span>
+                    @Html.DisplayFor(model => eventDate)
+                </p>
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                Details
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.ReleaseDate)
+                <p class="text-justify">
+                    @Html.DisplayFor(model => model.Description)
+                </p>
+                <h6 class="float-right">Organizer: @Html.DisplayFor(model => model.User.Name)</h6>
+                <br />
+                <hr />
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Description)
+                Where
             </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Price)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Price)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Spots)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Spots)
-            </dd>
-            <dt class="col-sm-2">
-                User
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.User.Email)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.EventCenter)
-            </dt>
-            <dd class="col-sm-10">
+            <dd class="col-sm-8">
+                <span class="icon-location-arrow"></span>
                 @Html.DisplayFor(model => model.EventCenter.Name)
             </dd>
-            @*@{ if (Model.Repetitions.Count > 0) {*@
+            @{
+                var precio = Math.Round(Model.Price, 0);
+                var precio2 = string.Format("{0:#,0}", precio);
+            }
+            <dd class="col-sm-2">
+                <p class="float-right">
+                    <span class="icon-dollar"></span>
+                    @Html.DisplayFor(model => precio2) CLP
+                </p>
+            </dd>
+
+            <dt class="col-sm-2">
+                Remaining Spots
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    var remainingSpots = Model.Spots - Model.Attendants.Count;
+                }
+                <span class="icon-person"></span>
+                @Html.DisplayFor(model => remainingSpots)
+
+            </dd>
+            @*@{ if (model.Repetitions.Count > 0) {
             <dt class="col-sm-2">
                 Coming back on:
             </dt>
+        }*@
             <dd class="col-sm-10">
                 @{
                     foreach (var repetitions in Model.Repetitions)
@@ -76,19 +129,23 @@
                 }
             </dd>
             <dd class="col-sm-10">
+
                 @{
-                    foreach (var attendant in Model.Attendants)
+                    @if (Model.Attendants.Count > 0)
                     {
-                        <text>
-                            <p> @attendant.User.Name @attendant.User.Lastname</p>
-                            <br />
-                        </text>
+                        <h5>Attendants</h5>
+                        foreach (var attendant in Model.Attendants)
+                        {
+                            <text>
+                                <p> @attendant.User.Name @attendant.User.Lastname</p>
+                                <br />
+                            </text>
+                        }
                     }
                 }
             </dd>
 
-            <div class="col-1"></div> 
-            <table id="myTable" class="col-10">
+            <table id="myTable" class="col-12 align-self-center">
                 <tr>
                     <th>Event Track</th>
                     <th>Event Type</th>
@@ -153,53 +210,21 @@
                         </tr>
                     }
                 }
-                
+
             </table>
         </dl>
     </div>
-    <div>
+    <div class="row">
         @{
             if (ViewBag.currentUser.Id == @Model.UserId)
             {
-                <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
-                    <button type="submit"  class="coolButton mt-2 mb-2" id="button5">
-                        Notification
-                    </button>
-                </form>
+                <div class="col-10">
+                    <a asp-action="AddParty" asp-route-id=@Model.Id class="coolButton" id="button5">AddParty</a>
+                </div>
             }
-            if (ViewBag.conferenceUser != null)
-            {
-                <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
-                    <button type="submit" class="coolButton" id="button5">
-                        Unsubscribe
-                    </button>
-                </form>
-            }
-            else if (@Model.Attendants.Count < @Model.Spots)
-            {
-                <form method="post" asp-action="AddAttendant" asp-route-id="@Model.Id">
-                    <button type="submit" class="coolButton" id="button5">
-                        Subscribe
-                    </button>
-                </form>
-            }
-            else
-            {
-                <h5>Esta conferencia esta llena!</h5>
-            }
-
-            if (ViewBag.currentUser.Id == @Model.UserId)
-            {
-                <a asp-action="Edit" asp-route-id="@Model.Id" id="button5" class="coolButton">Edit</a>
-                <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
-                    <button type="submit" class="coolButton" id="button5">
-                        Notification
-                    </button>
-                </form>
-                <a asp-action="AddParty" asp-route-id=@Model.Id class="coolButton">AddParty</a>
-            }
-
-            <a asp-action="Index" id="button5" class="coolButton float-right">Back to List</a>
+                <div class="col-2 float-right">
+                    <a asp-action="Index" id="button5" class="coolButton float-right">Back to List</a>
+                </div>
         }
 
     </div>
