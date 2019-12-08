@@ -60,6 +60,8 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Location,Menu,Id,RoomID,ConferenceId,PersonId,EventDate,EndEventDate,Track")] Dinner dinner)
         {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            dinner.UserId = currentUser.Id;
             if (ModelState.IsValid)
             {
                 _context.Add(dinner);
@@ -94,7 +96,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Location,Menu,Id,RoomID,ConferenceId,PersonId,EventDate,EndEventDate,Track")] Dinner dinner)
+        public async Task<IActionResult> Edit(int id, [Bind("Location,Menu,Id,RoomID,ConferenceId,PersonId,EventDate,EndEventDate,Track,UserId")] Dinner dinner)
         {
             if (id != dinner.Id)
             {
