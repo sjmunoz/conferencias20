@@ -75,6 +75,7 @@
                     }
                 }
             </dd>
+
             <dd class="col-sm-10">
                 @{
                     foreach (var attendant in Model.Attendants)
@@ -90,6 +91,12 @@
             <div class="col-1"></div> 
             <table id="myTable" class="col-10">
                 <tr>
+                    <form asp-controller="Conferences" asp-action="Details">
+                        <p>
+                            Title: <input type="text" name="SearchString">
+                            <input type="submit" value="Filter" />
+                        </p>
+                    </form>
                     <th>Event Track</th>
                     <th>Event Type</th>
                     <th>Creator</th>
@@ -97,6 +104,8 @@
                 @{
                     foreach (var party in Model.Parties)
                     {
+                        if (@party.Track.Contains(ViewBag.searchstring))
+                        {
                         <tr onclick="window.location.href = '/Parties/Details/@party.Id';">
                             <td>
                                 @party.Track
@@ -108,10 +117,13 @@
                                 @party.UserId
                             </td>
                         </tr>
+                        }
                     }
 
                     foreach (var chat in Model.Chats)
                     {
+                        if (@chat.Track.Contains(ViewBag.searchstring))
+                        {
                         <tr onclick="window.location.href = '/Chats/Details/@chat.Id';">
                             <td>
                                 @chat.Track
@@ -123,9 +135,12 @@
                                 @chat.UserId
                             </td>
                         </tr>
+                        }
                     }
                     foreach (var dinner in Model.Dinners)
                     {
+                        if (@dinner.Track.Contains(ViewBag.searchstring))
+                        {
                         <tr onclick="window.location.href = '/Dinners/Details/@dinner.Id';">
                             <td>
                                 @dinner.Track
@@ -137,9 +152,12 @@
                                 @dinner.UserId
                             </td>
                         </tr>
+                        }
                     }
                     foreach (var talk in Model.Talks)
                     {
+                        if (@talk.Track.Contains(ViewBag.searchstring))
+                        {
                         <tr onclick="window.location.href = '/Dinners/Details/@talk.Id';">
                             <td>
                                 @talk.Track
@@ -151,8 +169,9 @@
                                 @talk.UserId
                             </td>
                         </tr>
+                            }
+                        }
                     }
-                }
                 
             </table>
         </dl>
