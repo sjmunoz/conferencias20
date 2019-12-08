@@ -27,6 +27,7 @@ namespace MvcMovie.Models
         public virtual ICollection<TalkUser> AttendTalks { get; set; }
 
         public virtual ICollection<ChatUser> AttendChats { get; set; }
+        public virtual ICollection<DinnerUser> AttendDinners { get; set; }
 
     }
 }
