@@ -9,6 +9,9 @@
     <div>
         <h4>Talk</h4>
         <hr />
+        <div class="col-2">
+            <h4> Rating Promedio: @ViewBag.averageRating</h4>
+        </div>
         <dl class="row">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Conference)
@@ -81,6 +84,11 @@
                 <form method="post" asp-action="DeleteAttendant" asp-route-id="@Model.Id">
                     <button type="submit" class="coolButton" id="button5">
                         Unsubscribe
+                    </button>
+                </form>
+                <form method="get" asp-action="giveRating" asp-route-id="@Model.Id">
+                    <button type="submit" class="coolButton" id="button5">
+                        Give Rating
                     </button>
                 </form>
             }

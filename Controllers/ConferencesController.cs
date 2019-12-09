@@ -40,8 +40,11 @@ namespace MvcMovie.Controllers
                 .Include(b => b.Parties)
                 .ThenInclude(party => party.Attendants)
                 .Include(b => b.Talks)
+                .ThenInclude(talk => talk.Attendants)
                 .Include(b => b.Chats)
+                .ThenInclude(chat => chat.Attendants)
                 .Include(b => b.Dinners)
+                .ThenInclude(dinner => dinner.Attendants)
                 .Include(b => b.User)
                 .Include(c => c.EventCenter)
                 .Include(c => c.Repetitions)
@@ -60,7 +63,28 @@ namespace MvcMovie.Controllers
                 partyAttendants += party.Attendants.Count;
             }
 
+            var dinnerAttendants = 0;
+            foreach (var dinner in conference.Dinners)
+            {
+                dinnerAttendants += dinner.Attendants.Count;
+            }
+
+            var talkAttendants = 0;
+            foreach (var talk in conference.Talks)
+            {
+                talkAttendants += talk.Attendants.Count;
+            }
+
+            var chatAttendants = 0;
+            foreach (var chat in conference.Chats)
+            {
+                chatAttendants += chat.Attendants.Count;
+            }
+
             ViewData["partyAttendants"] = partyAttendants;
+            ViewData["dinnerAttendants"] = dinnerAttendants;
+            ViewData["talkAttendants"] = talkAttendants;
+            ViewData["chatAttendants"] = chatAttendants;
             ViewData["conferenceUser"] = conferenceUser;
             ViewData["currentUser"] = currentUser;
             return View(conference);

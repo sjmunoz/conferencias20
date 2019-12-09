@@ -49,8 +49,17 @@ namespace MvcMovie.Controllers
 
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             var talkUser = await _context.TalkUser.FindAsync(currentUser.Id, talk.Id);
+
+            var averageRating = 0;
+            foreach (var attendant in talk.Attendants)
+            {
+                averageRating += attendant.Rating.Value;
+            }
+            averageRating = averageRating / talk.Attendants.Count;
+
             ViewData["talkUser"] = talkUser;
             ViewData["currentUser"] = currentUser;
+            ViewData["averageRating"] = averageRating;
 
             return View(talk);
         }
@@ -208,6 +217,31 @@ namespace MvcMovie.Controllers
 
             _context.TalkUser.Remove(talkUser);
             await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        public IActionResult giveRating(int id)
+        {
+            ViewData["TalkId"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> giveRating(int id, [Bind("Rating")] TalkUser talkUser)
+        {
+            var talk = await _context.Talk.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (talk == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var attendant = await _context.TalkUser.FindAsync(currentUser.Id, talk.Id);
+            attendant.Rating = talkUser.Rating;
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Details", new { id = id });
         }
 
