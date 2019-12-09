@@ -3,6 +3,30 @@
 @{
     ViewData["Title"] = "Details";
 }
+
+<script type="text/javascript">
+
+    google.charts.load('current', {
+        packages: ['corechart', 'bar']
+    });
+
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Event', 'Attendants'],
+            ['Parties', @ViewBag.partyAttendants],
+        ]);
+
+        var options = {
+            title: 'Asistentes por tipo de evento',
+            pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+    }
+</script>
+
 <div class="regular-crud">
 
     <h1>Details</h1>
@@ -16,6 +40,7 @@
                 <h4> Attendants: @Model.Attendants.Count</h4>
             </div>
         </div>
+        <div id="donutchart"></div>
         <hr />
         <dl class="row">
             <dt class="col-sm-2">
@@ -87,7 +112,7 @@
                 }
             </dd>
 
-            <div class="col-1"></div> 
+            <div class="col-1"></div>
             <table id="myTable" class="col-10">
                 <tr>
                     <th>Event Track</th>
@@ -153,7 +178,7 @@
                         </tr>
                     }
                 }
-                
+
             </table>
         </dl>
     </div>
@@ -162,7 +187,7 @@
             if (ViewBag.currentUser.Id == @Model.UserId)
             {
                 <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
-                    <button type="submit"  class="coolButton mt-2 mb-2" id="button5">
+                    <button type="submit" class="coolButton mt-2 mb-2" id="button5">
                         Notification
                     </button>
                 </form>

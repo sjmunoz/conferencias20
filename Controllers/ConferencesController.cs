@@ -38,6 +38,7 @@ namespace MvcMovie.Controllers
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             var conference = await _context.Conference
                 .Include(b => b.Parties)
+                .ThenInclude(party => party.Attendants)
                 .Include(b => b.Talks)
                 .Include(b => b.Chats)
                 .Include(b => b.Dinners)
@@ -53,6 +54,13 @@ namespace MvcMovie.Controllers
                 return NotFound();
             }
 
+            var partyAttendants = 0;
+            foreach (var party in conference.Parties)
+            {
+                partyAttendants += party.Attendants.Count;
+            }
+
+            ViewData["partyAttendants"] = partyAttendants;
             ViewData["conferenceUser"] = conferenceUser;
             ViewData["currentUser"] = currentUser;
             return View(conference);
