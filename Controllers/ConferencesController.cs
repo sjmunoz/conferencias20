@@ -39,7 +39,6 @@ namespace MvcMovie.Controllers
             var conference = await _context.Conference
                 .Include(b => b.Parties)
                 .ThenInclude(party => party.Attendants)
-                .ThenInclude(party => party.User)
                 .Include(b => b.Talks)
                 .ThenInclude(talk => talk.Attendants)
                 .Include(b => b.Chats)
@@ -113,7 +112,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddParty(int id, [Bind("RoomID,PersonId,EventDate,EndEventDate,Track")] Party party)
+        public async Task<IActionResult> AddParty(int id, [Bind("RoomID,EventDate,EndEventDate,Track")] Party party)
         {
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             party.UserId = currentUser.Id;
@@ -121,6 +120,39 @@ namespace MvcMovie.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(party);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        // GET: AddTalk/Create
+        public async Task<IActionResult> AddTalk(int id)
+        {
+            
+            var conference = await _context.Conference
+                .Include(c => c.EventCenter)
+                .ThenInclude(d => d.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            
+            ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["ConferenceName"] = conference.Name;
+            ViewData["Talkers"] = new SelectList(_context.User, "UserName", "UserName");
+            return View();
+        }
+
+        // POST: AddTalk/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTalk(int id, [Bind("Resources,Talker,RoomID,EventDate,EndEventDate,Track")] Talk talk)
+        {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            talk.UserId = currentUser.Id;
+            talk.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(talk);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Details", new { id = id });

@@ -236,7 +236,7 @@
                                     Dinner
                                 </td>
                                 <td>
-                                    @dinner.UserId
+                                    @dinner.User.Name
                                 </td>
                             </tr>
                         }
@@ -254,7 +254,7 @@
                                     Talk
                                 </td>
                                 <td>
-                                    @talk.UserId
+                                    @talk.User.Name
                                 </td>
                             </tr>
                         }
@@ -270,6 +270,9 @@
             {
                 <div class="col-10">
                     <a asp-action="AddParty" asp-route-id=@Model.Id class="coolButton" id="button5">AddParty</a>
+                </div>
+                <div class="col-10">
+                    <a asp-action="AddTalk" asp-route-id=@Model.Id class="coolButton" id="button5">AddTalk</a>
                 </div>
             }
             <div class="col-2 float-right">
