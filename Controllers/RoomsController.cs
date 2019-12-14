@@ -115,7 +115,7 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Capacity,Location")] Room room)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Capacity,Location,EventCenterId")] Room room)
         {
             if (id != room.Id)
             {
