@@ -39,6 +39,7 @@ namespace MvcMovie.Controllers
             var conference = await _context.Conference
                 .Include(b => b.Parties)
                 .ThenInclude(party => party.Attendants)
+                .ThenInclude(party => party.User)
                 .Include(b => b.Talks)
                 .ThenInclude(talk => talk.Attendants)
                 .Include(b => b.Chats)
@@ -114,7 +115,8 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddParty(int id, [Bind("RoomID,PersonId,EventDate,EndEventDate,Track")] Party party)
         {
-
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            party.UserId = currentUser.Id;
             party.ConferenceId = id;
             if (ModelState.IsValid)
             {
