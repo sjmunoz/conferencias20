@@ -189,6 +189,37 @@ namespace MvcMovie.Controllers
             return RedirectToAction("Details", new { id = id });
         }
 
+        // GET: AddDinner/Create
+        public async Task<IActionResult> AddDinner(int id)
+        {
+            var conference = await _context.Conference
+                .Include(c => c.EventCenter)
+                .ThenInclude(d => d.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["ConferenceName"] = conference.Name;
+            return View();
+        }
+
+        // POST: AddDinner/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDinner(int id, [Bind("Location,Menu,RoomID,EventDate,EndEventDate,Track")] Dinner dinner)
+        {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            dinner.UserId = currentUser.Id;
+            dinner.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(dinner);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
         // GET: AddRepetition/Create
         public IActionResult AddRepetition(int id)
         {
