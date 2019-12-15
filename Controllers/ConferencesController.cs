@@ -167,6 +167,7 @@ namespace MvcMovie.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["Moderators"] = new SelectList(_context.User, "UserName", "UserName");
             ViewData["ConferenceName"] = conference.Name;
             return View();
         }
