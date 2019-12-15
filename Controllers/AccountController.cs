@@ -26,20 +26,34 @@ namespace MvcMovie.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Profile()
+        //[HttpGet] Dejo comentado esto para que funcione el POST del filtro de eventos
+        public async Task<IActionResult> Profile(string searchstring, string othersearchstring)
         {
             //var user = await userManager.FindByNameAsync(User.Identity.Name);
 
             var user = await context.User
                 .Include(b => b.Conferences)
                 .Include(b => b.Parties)
+                .Include(b => b.Dinners)
+                .Include(b => b.Talks)
+                .Include(b => b.Chats)
                 .Include(b => b.AttendConferences)
                 .ThenInclude(attendConference => attendConference.Conference)
                 .Include(b => b.ConferenceNotifications)
                 .Include(b => b.AttendParties)
                 .ThenInclude(attendParty => attendParty.Party)
+                .Include(b => b.AttendChats)
+                .ThenInclude(attendChat => attendChat.Chat)
+                .Include(b => b.AttendDinners)
+                .ThenInclude(attendDinner => attendDinner.Dinner)
+                .Include(b => b.AttendTalks)
+                .ThenInclude(attendTalk => attendTalk.Talk)
                 .FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
+
+            ViewData["searchstring"] = "";
+            if (searchstring != null) { ViewData["searchstring"] = searchstring; }
+            ViewData["othersearchstring"] = "";
+            if (othersearchstring != null) { ViewData["othersearchstring"] = othersearchstring; }
 
             return View(user);
         }

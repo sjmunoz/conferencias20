@@ -60,6 +60,7 @@ namespace MvcMovie.Controllers
         {
             ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Name");
             ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location");
+            ViewData["Moderators"] = new SelectList(_context.User, "UserName", "UserName");
             return View();
         }
 
@@ -80,6 +81,7 @@ namespace MvcMovie.Controllers
             }
             ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", chat.ConferenceId);
             ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", chat.RoomID);
+            ViewData["Moderators"] = new SelectList(_context.User, "UserName", "UserName", chat.ModeratorId);
             return View(chat);
         }
 
@@ -96,8 +98,9 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
-            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", chat.ConferenceId);
-            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", chat.RoomID);
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Name", chat.ConferenceId);
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location", chat.RoomID);
+            ViewData["Moderators"] = new SelectList(_context.User, "UserName", "UserName", chat.ModeratorId);
             return View(chat);
         }
 
@@ -135,6 +138,7 @@ namespace MvcMovie.Controllers
             }
             ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", chat.ConferenceId);
             ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", chat.RoomID);
+            ViewData["Moderators"] = new SelectList(_context.User, "UserName", "UserName", chat.ModeratorId);
             return View(chat);
         }
 

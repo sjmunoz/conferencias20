@@ -60,19 +60,62 @@
         </dl>
         <dl class="row">
             <dd class="col-12">
-                <h4>Mis Fiestas</h4>
+                <h4>Mis Eventos</h4>
             </dd>
             <dd class="col-6">
+                <form asp-controller="Account" asp-action="Profile">
+                    <div class="col-10">
+                        <p class="float-center">
+                            Title: <input type="text" name="SearchString">
+                            <input type="submit" value="Filter" />
+                        </p>
+                    </div>
+                </form>
                 <table id="myTable">
                     <tr>
-                        <th>Fiestas</th>
+                        <th>Evento</th>
+                        <th>Tipo</th>
                     </tr>
                     @{
                         foreach (var party in Model.Parties)
                         {
-                            <tr>
-                                <td><a asp-controller="Parties" asp-action="Details" asp-route-id="@party.Id"> @party.Track </a></td>
-                            </tr>
+                            if (@party.Track.Contains(ViewBag.searchstring))
+                            {
+                                <tr>
+                                    <td><a asp-controller="Parties" asp-action="Details" asp-route-id="@party.Id"> @party.Track </a></td>
+                                    <td>Party</td>
+                                </tr>
+                            }
+                        }
+                        foreach (var chat in Model.Chats)
+                        {
+                            if (@chat.Track.Contains(ViewBag.searchstring))
+                            {
+                                <tr>
+                                    <td><a asp-controller="Chats" asp-action="Details" asp-route-id="@chat.Id"> @chat.Track </a></td>
+                                    <td>Chat</td>
+                                </tr>
+                            }
+                        }
+                        foreach (var dinner in Model.Dinners)
+                        {
+                            if (dinner.Track.Contains(ViewBag.searchstring))
+                            {
+                                <tr>
+                                    <td><a asp-controller="Dinners" asp-action="Details" asp-route-id="@dinner.Id"> @dinner.Track </a></td>
+                                    <td>Dinner</td>
+                                </tr>
+                            }
+                        }
+                        foreach (var talk in Model.Talks)
+                        {
+                            if (talk.Track.Contains(ViewBag.searchstring))
+                            {
+                                <tr>
+                                    <td><a asp-controller="Talks" asp-action="Details" asp-route-id="@talk.Id"> @talk.Track </a></td>
+                                    <td>Talk</td>
+                                </tr>
+                            }
                         }
                     }
                 </table>
@@ -139,22 +182,71 @@
         <dl class="row">
             <dd class="col-12">
 
-                <h4>Fiestas a las que estoy suscrito</h4>
+                <h4>Eventos a las que estoy suscrito</h4>
             </dd>
 
             <dd class="col-6">
+                <form asp-controller="Account" asp-action="Profile">
+                    <div class="col-10">
+                        <p class="float-center">
+                            Title: <input type="text" name="OtherSearchString">
+                            <input type="submit" value="Filter" />
+                        </p>
+                    </div>
+                </form>
                 <table id="myTable">
                     <tr>
-                        <th>Party</th>
+                        <th>Evento</th>
+                        <th>Tipo</th>
                     </tr>
                     @{
                         foreach (var attendParty in Model.AttendParties)
                         {
+                            if (attendParty.Party.Track.Contains(ViewBag.othersearchstring))
+                            {
                             <tr>
                                 <td>
                                     <a asp-controller="Parties" asp-action="Details" asp-route-id="@attendParty.Party.Id"> @attendParty.Party.Track </a>
                                 </td>
+                                <td>Party</td>
                             </tr>
+                            }
+                        }
+                        foreach (var attendChat in Model.AttendChats)
+                        {
+                            if (attendChat.Chat.Track.Contains(ViewBag.othersearchstring))
+                            {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Chats" asp-action="Details" asp-route-id="@attendChat.Chat.Id"> @attendChat.Chat.Track </a>
+                                </td>
+                                <td>Chat</td>
+                            </tr>
+                            }
+                        }
+                        foreach (var attendDinner in Model.AttendDinners)
+                        {
+                            if (attendDinner.Dinner.Track.Contains(ViewBag.othersearchstring))
+                            {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Dinners" asp-action="Details" asp-route-id="@attendDinner.Dinner.Id"> @attendDinner.Dinner.Track </a>
+                                </td>
+                                <td>Dinner</td>
+                            </tr>
+                            }
+                        }
+                        foreach (var attendTalk in Model.AttendTalks)
+                        {
+                            if (attendTalk.Talk.Track.Contains(ViewBag.othersearchstring))
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Talks" asp-action="Details" asp-route-id="@attendTalk.Talk.Id"> @attendTalk.Talk.Track </a>
+                                    </td>
+                                    <td>Talk</td>
+                                </tr>
+                            }
                         }
                     }
                 </table>

@@ -112,13 +112,110 @@ namespace MvcMovie.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddParty(int id, [Bind("RoomID,PersonId,EventDate,EndEventDate,Track")] Party party)
+        public async Task<IActionResult> AddParty(int id, [Bind("RoomID,EventDate,EndEventDate,Track")] Party party)
         {
-
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            party.UserId = currentUser.Id;
             party.ConferenceId = id;
             if (ModelState.IsValid)
             {
                 _context.Add(party);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        // GET: AddTalk/Create
+        public async Task<IActionResult> AddTalk(int id)
+        {
+            
+            var conference = await _context.Conference
+                .Include(c => c.EventCenter)
+                .ThenInclude(d => d.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            
+            ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["ConferenceName"] = conference.Name;
+            ViewData["Talkers"] = new SelectList(_context.User, "UserName", "UserName");
+            return View();
+        }
+
+        // POST: AddTalk/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTalk(int id, [Bind("Resources,Talker,RoomID,EventDate,EndEventDate,Track")] Talk talk)
+        {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            talk.UserId = currentUser.Id;
+            talk.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(talk);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        // GET: AddChat/Create
+        public async Task<IActionResult> AddChat(int id)
+        {
+            var conference = await _context.Conference
+                .Include(c => c.EventCenter)
+                .ThenInclude(d => d.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["Moderators"] = new SelectList(_context.User, "UserName", "UserName");
+            ViewData["ConferenceName"] = conference.Name;
+            return View();
+        }
+
+        // POST: AddChat/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddChat(int id, [Bind("ModeratorId,RoomID,EventDate,EndEventDate,Track")] Chat chat)
+        {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            chat.UserId = currentUser.Id;
+            chat.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(chat);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        // GET: AddDinner/Create
+        public async Task<IActionResult> AddDinner(int id)
+        {
+            var conference = await _context.Conference
+                .Include(c => c.EventCenter)
+                .ThenInclude(d => d.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["ConferenceName"] = conference.Name;
+            return View();
+        }
+
+        // POST: AddDinner/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddDinner(int id, [Bind("Location,Menu,RoomID,EventDate,EndEventDate,Track")] Dinner dinner)
+        {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            dinner.UserId = currentUser.Id;
+            dinner.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(dinner);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Details", new { id = id });

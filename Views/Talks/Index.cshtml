@@ -11,19 +11,16 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Resources)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Talker)
+                        @Html.DisplayNameFor(model => model.Conference)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Room)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Conference)
+                        @Html.DisplayNameFor(model => model.Resources)
                     </th>
                     <th>
-                        User
+                        @Html.DisplayNameFor(model => model.Talker)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.EventDate)
@@ -40,37 +37,34 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Resources)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Talker)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Room.Location)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Conference.Name)
-                        </td>
-                        <td>
-                            @item.User
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EventDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndEventDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Track)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Conference.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Room.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Resources)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Talker)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EventDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndEventDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Track)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
