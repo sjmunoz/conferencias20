@@ -158,6 +158,37 @@ namespace MvcMovie.Controllers
             return RedirectToAction("Details", new { id = id });
         }
 
+        // GET: AddChat/Create
+        public async Task<IActionResult> AddChat(int id)
+        {
+            var conference = await _context.Conference
+                .Include(c => c.EventCenter)
+                .ThenInclude(d => d.Rooms)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewData["RoomID"] = new SelectList(conference.EventCenter.Rooms, "Id", "Location");
+            ViewData["ConferenceName"] = conference.Name;
+            return View();
+        }
+
+        // POST: AddChat/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddChat(int id, [Bind("ModeratorId,RoomID,EventDate,EndEventDate,Track")] Chat chat)
+        {
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+            chat.UserId = currentUser.Id;
+            chat.ConferenceId = id;
+            if (ModelState.IsValid)
+            {
+                _context.Add(chat);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+
         // GET: AddRepetition/Create
         public IActionResult AddRepetition(int id)
         {
