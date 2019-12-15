@@ -96,8 +96,8 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
-            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Id", party.ConferenceId);
-            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Id", party.RoomID);
+            ViewData["ConferenceId"] = new SelectList(_context.Conference, "Id", "Name", party.ConferenceId);
+            ViewData["RoomID"] = new SelectList(_context.Room, "Id", "Location", party.RoomID);
             return View(party);
         }
 
