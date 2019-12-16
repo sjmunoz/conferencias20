@@ -38,20 +38,8 @@
 
     <div>
         <div class="row">
-            <div class="col-6">
+            <div class="col-8">
                 <h4>Conference</h4>
-            </div>
-            <div class="col-2">
-                @{
-                    if (ViewBag.currentUser.Id == @Model.UserId)
-                    {
-                        <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
-                            <button type="submit" class="coolButton" id="button5">
-                                Send Message
-                            </button>
-                        </form>
-                    }
-                }
             </div>
             <div class="col-2">
                 @{
@@ -173,10 +161,21 @@
                 }
             </dd>
 
-            <div class="col-1"></div>
-            <table id="myTable" class="col-10">
+            <div class="col-12">
+                @{
+                    if (ViewBag.currentUser.Id == @Model.UserId)
+                    {
+                        <form method="get" asp-action="AddNotification" asp-route-id="@Model.Id">
+                            <button type="submit" class="coolButton float-left" id="button5">
+                                Send Message
+                            </button>
+                        </form>
+                    }
+                }
+            </div>
+            <table id="myTable" class="col-12">
                 <form asp-controller="Conferences" asp-action="Details">
-                    <div class="col-10">
+                    <div class="col-12">
                         <p class="float-right">
                             Title: <input type="text" name="SearchString">
                             <input type="submit" value="Filter" />
@@ -268,20 +267,20 @@
         @{
             if (ViewBag.currentUser.Id == @Model.UserId)
             {
-                <div class="col-10">
+                <div class="col-1 mr-3">
                     <a asp-action="AddParty" asp-route-id=@Model.Id class="coolButton" id="button5">Add Party</a>
                 </div>
-                <div class="col-10">
+                <div class="col-1 mr-3">
                     <a asp-action="AddChat" asp-route-id=@Model.Id class="coolButton" id="button5">Add Chat</a>
                 </div>
-                <div class="col-10">
+                <div class="col-1 mr-3">
                     <a asp-action="AddDinner" asp-route-id=@Model.Id class="coolButton" id="button5">Add Dinner</a>
                 </div>
-                <div class="col-10">
+                <div class="col-1 mr-3">
                     <a asp-action="AddTalk" asp-route-id=@Model.Id class="coolButton" id="button5">Add Talk</a>
                 </div>
             }
-            <div class="col-2 float-right">
+            <div class="col-7 float-right">
                 <a asp-action="Index" id="button5" class="coolButton float-right">Back to List</a>
             </div>
         }

@@ -53,9 +53,21 @@ namespace MvcMovie.Controllers
             var averageRating = 0;
             foreach (var attendant in talk.Attendants)
             {
+                try {
                 averageRating += attendant.Rating.Value;
+                }
+                catch
+                {
+                    
+                }
             }
-            averageRating = averageRating / talk.Attendants.Count;
+            if(talk.Attendants.Count > 0) { 
+                averageRating = averageRating / talk.Attendants.Count;
+            }
+            else
+            {
+                averageRating = 0;
+            }
 
             ViewData["talkUser"] = talkUser;
             ViewData["currentUser"] = currentUser;
