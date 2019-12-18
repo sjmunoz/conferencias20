@@ -13741,3 +13741,41 @@ textarea.form-control {
 .text-justify {
     text-align: justify;
 }
+
+
+.indexTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    min-width: 50%;
+}
+
+    .indexTable td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .indexTable tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .indexTable tr:hover {
+        background-color: #ddd
+    }
+
+    .indexTable a {
+        color: black;
+    }
+
+    .indexTable th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: white;
+        color: black;
+    }
+
+    .indexTable .centerTable {
+        margin: 0 auto;
+    }

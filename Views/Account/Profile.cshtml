@@ -4,165 +4,265 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="regular-crud">
+    <div class="regular-crud">
 
-    <div>
-        <h1>My Profile</h1>
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Lastname)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Lastname)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.University)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.University)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Career)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Career)
-            </dd>
+        <div>
+            <h1>My Profile</h1>
+            <div class="row border p-4 mb-4">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Lastname)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Lastname)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.University)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.University)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Career)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Career)
+                    </dd>
 
-        </dl>
-        <dl class="row">
-            <dd class="col-12">
-                <h4>Mis Conferencias</h4>
-            </dd>
-            <dd class="col-6">
-                <table id="myTable">
-                    <tr>
-                        <th>Conferences</th>
-                        <th>Descriptions</th>
-                    </tr>
-                    @{
-                        foreach (var conference in Model.Conferences)
-                        {
-                            <tr>
-                                <td><a asp-controller="Conferences" asp-action="Details" asp-route-id="@conference.Id"> @conference.Name </a></td>
-                                <td><a asp-controller="Conferences" asp-action="Details" asp-route-id="@conference.Id"> @conference.Description </a> </td>
-                            </tr>
-                            <br />
+                </dl>
+            </div>
+            <div class="row border mb-4 p-4">
+                <div class="col-6">
+                    <h4>Mis Conferencias</h4>
+                    <form asp-controller="Account" asp-action="Profile" class="hide">
+                        <div class="col-12">
+                            <p class="float-right">
+                                Title: <input type="text" name="SearchString">
+                                <input type="submit" value="Filter" />
+                            </p>
+                        </div>
+                    </form>
+                    <table id="myTable" class="col-12">
+                        <tr>
+                            <th>Conference</th>
+                            <th>Descriptions</th>
+                        </tr>
+                        @{
+                            foreach (var conference in Model.Conferences)
+                            {
+                                <tr>
+                                    <td><a asp-controller="Conferences" asp-action="Details" asp-route-id="@conference.Id"> @conference.Name </a></td>
+                                    <td><a asp-controller="Conferences" asp-action="Details" asp-route-id="@conference.Id"> @conference.Description </a> </td>
+                                </tr>
+                            }
                         }
-                    }
-                </table>
-            </dd>
-        </dl>
-        <dl class="row">
-            <dd class="col-12">
-                <h4>Mis Fiestas</h4>
-            </dd>
-            <dd class="col-6">
-                <table id="myTable">
-                    <tr>
-                        <th>Fiestas</th>
-                    </tr>
-                    @{
-                        foreach (var party in Model.Parties)
-                        {
-                            <tr>
-                                <td><a asp-controller="Parties" asp-action="Details" asp-route-id="@party.Id"> @party.Track </a></td>
-                            </tr>
+                    </table>
+                </div>
+                <div class="col-6">
+                    <h4>Mis Eventos</h4>
+                    <form asp-controller="Account" asp-action="Profile">
+                        <div class="col-12">
+                            <p class="float-right">
+                                Title: <input type="text" name="SearchString">
+                                <input type="submit" value="Filter" />
+                            </p>
+                        </div>
+                    </form>
+                    <table id="myTable" class="col-12">
+                        <tr>
+                            <th>Evento</th>
+                            <th>Tipo</th>
+                        </tr>
+                        @{
+                            foreach (var party in Model.Parties)
+                            {
+                                if (@party.Track.Contains(ViewBag.searchstring))
+                                {
+                                    <tr>
+                                        <td><a asp-controller="Parties" asp-action="Details" asp-route-id="@party.Id"> @party.Track </a></td>
+                                        <td>Party</td>
+                                    </tr>
+                                }
+                            }
+                            foreach (var chat in Model.Chats)
+                            {
+                                if (@chat.Track.Contains(ViewBag.searchstring))
+                                {
+                                    <tr>
+                                        <td><a asp-controller="Chats" asp-action="Details" asp-route-id="@chat.Id"> @chat.Track </a></td>
+                                        <td>Chat</td>
+                                    </tr>
+                                }
+                            }
+                            foreach (var dinner in Model.Dinners)
+                            {
+                                if (dinner.Track.Contains(ViewBag.searchstring))
+                                {
+                                    <tr>
+                                        <td><a asp-controller="Dinners" asp-action="Details" asp-route-id="@dinner.Id"> @dinner.Track </a></td>
+                                        <td>Dinner</td>
+                                    </tr>
+                                }
+                            }
+                            foreach (var talk in Model.Talks)
+                            {
+                                if (talk.Track.Contains(ViewBag.searchstring))
+                                {
+                                    <tr>
+                                        <td><a asp-controller="Talks" asp-action="Details" asp-route-id="@talk.Id"> @talk.Track </a></td>
+                                        <td>Talk</td>
+                                    </tr>
+                                }
+                            }
                         }
-                    }
-                </table>
-            </dd>
-        </dl>
-        <dl class="row">
-            <dd class="col-12">
+                    </table>
 
-                <h4>My Subscriptions</h4>
-            </dd>
+                </div>
+            </div>
+            <div class="row border p-4">
+                <div class="col-6 mb-4">
+                    <h4>
+                        My Subscriptions
+                    </h4>
 
-            <dd class="col-6">
-                <table id="myTable">
-                    <tr>
-                        <th>Conferences</th>
-                        <th>Descriptions</th>
-                    </tr>
-                    @{
-                        foreach (var attendConference in Model.AttendConferences)
-                        {
-                            <tr>
-                                <td>
-                                    <a asp-controller="Conferences" asp-action="Details" asp-route-id="@attendConference.Conference.Id"> @attendConference.Conference.Name </a>
-                                </td>
-                                <td>
-                                    <a asp-controller="Conferences" asp-action="Details" asp-route-id="@attendConference.Conference.Id"> @attendConference.Conference.Description </a>
-                                </td>
-                            </tr>
+                    <table id="myTable" class="col-12">
+                        <tr>
+                            <th>Conferences</th>
+                            <th>Descriptions</th>
+                        </tr>
+                        @{
+                            foreach (var attendConference in Model.AttendConferences)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Conferences" asp-action="Details" asp-route-id="@attendConference.Conference.Id"> @attendConference.Conference.Name </a>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Conferences" asp-action="Details" asp-route-id="@attendConference.Conference.Id"> @attendConference.Conference.Description </a>
+                                    </td>
+                                </tr>
+                            }
                         }
-                    }
-                </table>
-            </dd>
-        </dl>
+                    </table>
 
-        <dl class="row">
-            <dd class="col-12">
-
-                <h4>Notificationes de conferencias</h4>
-            </dd>
-
-            <dd class="col-6">
-                <table id="myTable">
-                    <tr>
-                        <th>Conference</th>
-                        <th>Message</th>
-                    </tr>
-                    @{
-                        foreach (var conferenceNotification in Model.ConferenceNotifications)
-                        {
-                            <tr>
-                                <td>
-                                    <a asp-controller="Conferences" asp-action="Details" asp-route-id="@conferenceNotification.Conference.Id"> @conferenceNotification.Conference.Name </a>
-                                </td>
-                                <td>
-                                    @conferenceNotification.Message
-                                </td>
-                            </tr>
+                </div>
+                <div class="col-6 mb-4">
+                    <h4>My Notifications</h4>
+                    <table id="myTable" class="col-12">
+                        <tr>
+                            <th>Conference</th>
+                            <th>Message</th>
+                        </tr>
+                        @{
+                            foreach (var conferenceNotification in Model.ConferenceNotifications)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-controller="Conferences" asp-action="Details" asp-route-id="@conferenceNotification.Conference.Id"> @conferenceNotification.Conference.Name </a>
+                                    </td>
+                                    <td>
+                                        @conferenceNotification.Message
+                                    </td>
+                                </tr>
+                            }
                         }
-                    }
-                </table>
-            </dd>
-        </dl>
+                    </table>
+                </div>
 
-        <dl class="row">
-            <dd class="col-12">
-
-                <h4>Fiestas a las que estoy suscrito</h4>
-            </dd>
-
-            <dd class="col-6">
-                <table id="myTable">
-                    <tr>
-                        <th>Party</th>
-                    </tr>
-                    @{
-                        foreach (var attendParty in Model.AttendParties)
-                        {
+                <div class="col-12">
+                    <h4>Event Subscriptions</h4>
+                    <dd class="col-6">
+                        <form asp-controller="Account" asp-action="Profile">
+                            <div class="col-12">
+                                <p class="float-right">
+                                    Title: <input type="text" name="OtherSearchString">
+                                    <input type="submit" value="Filter" />
+                                </p>
+                            </div>
+                        </form>
+                        <table id="myTable" class="col-12">
                             <tr>
-                                <td>
-                                    <a asp-controller="Parties" asp-action="Details" asp-route-id="@attendParty.Party.Id"> @attendParty.Party.Track </a>
-                                </td>
+                                <th>Evento</th>
+                                <th>Tipo</th>
+                                <th>Conferencia</th>
                             </tr>
-                        }
-                    }
-                </table>
-            </dd>
-        </dl>
-    </div>
-    <div>
+                            @{
+                                foreach (var attendParty in Model.AttendParties)
+                                {
+                                    if (attendParty.Party.Track.Contains(ViewBag.othersearchstring))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a asp-controller="Parties" asp-action="Details" asp-route-id="@attendParty.Party.Id"> @attendParty.Party.Track </a>
+                                            </td>
+                                            <td>Party</td>
+                                            <td>
+                                                <a asp-controller="Conferences" asp-action="Details"  asp-route-id="@attendParty.Party.Conference.Id"> @attendParty.Party.Conference.Name</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                foreach (var attendChat in Model.AttendChats)
+                                {
+                                    if (attendChat.Chat.Track.Contains(ViewBag.othersearchstring))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a asp-controller="Chats" asp-action="Details" asp-route-id="@attendChat.Chat.Id"> @attendChat.Chat.Track </a>
+                                            </td>
+                                            <td>Chat</td>
+                                            <td>
+                                                <a asp-controller="Conferences" asp-action="Details"  asp-route-id="@attendChat.Chat.Conference.Id"> @attendChat.Chat.Conference.Name</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                foreach (var attendDinner in Model.AttendDinners)
+                                {
+                                    if (attendDinner.Dinner.Track.Contains(ViewBag.othersearchstring))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a asp-controller="Dinners" asp-action="Details" asp-route-id="@attendDinner.Dinner.Id"> @attendDinner.Dinner.Track </a>
+                                            </td>
+                                            <td>Dinner</td>
+                                            <td>
+                                                <a asp-controller="Conferences" asp-action="Details"  asp-route-id="@attendDinner.Dinner.Conference.Id"> @attendDinner.Dinner.Conference.Name</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                foreach (var attendTalk in Model.AttendTalks)
+                                {
+                                    if (attendTalk.Talk.Track.Contains(ViewBag.othersearchstring))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a asp-controller="Talks" asp-action="Details" asp-route-id="@attendTalk.Talk.Id"> @attendTalk.Talk.Track </a>
+                                            </td>
+                                            <td>Talk</td>
+                                            <td>
+                                                <a asp-controller="Conferences" asp-action="Details"  asp-route-id="@attendTalk.Talk.Conference.Id"> @attendTalk.Talk.Conference.Name</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </table>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="mt-4">
         <a asp-action="Edit" asp-route-id="@Model.Id" id="button5" class="coolButton">Edit</a>
         <a href="/" id="button5" class="coolButton float-right">Back Home</a>
     </div>
-</div>
+
+    </div>

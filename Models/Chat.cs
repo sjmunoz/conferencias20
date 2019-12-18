@@ -19,7 +19,7 @@ namespace MvcMovie.Models
         public DateTime EndEventDate { get; set; }
 
         public string Track { get; set; }
-        public int ModeratorId { get; set; }
+        public string ModeratorId { get; set; }
         public virtual Room Room { get; set; }
         public virtual Conference Conference { get; set; }
         public ApplicationUser User { get; set; }

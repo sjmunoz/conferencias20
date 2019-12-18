@@ -45,9 +45,8 @@ namespace MvcMovie.Controllers
 
 
         // GET: AddRoom/Create
-        public IActionResult AddRoom(int id)
+        public IActionResult AddRoom()
         {
-            ViewData["EventCenterId"] = id;
             return View();
         }
 
