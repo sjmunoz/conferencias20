@@ -23,6 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/css/site.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 
@@ -51,7 +52,7 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light border-bottom" id="ftco-navbar">
         <div class="container">
             <a class="navbar-brand" href="/">Seba Talks</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,24 +63,23 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item down-nav-item"><a href="/conferences" class="nav-link">Conferences</a></li>
                     <li class="nav-item down-nav-item"><a href="/eventcenters" class="nav-link">Event Centers</a></li>
-                    <li class="nav-item down-nav-item"><a href="/rooms" class="nav-link">Rooms</a></li>
                     <li class="nav-item down-nav-item"><a href="/parties" class="nav-link">Parties</a></li>
                     <li class="nav-item down-nav-item"><a href="/chats" class="nav-link">Chats</a></li>
                     <li class="nav-item down-nav-item"><a href="/dinners" class="nav-link">Dinners</a></li>
                     <li class="nav-item down-nav-item"><a href="/talks" class="nav-link">Talks</a></li>
                     @if (signInManager.IsSignedIn(User))
                     {
-                        <li class="nav-item2">
+                        <li class="nav-item down-nav-item">
+                            <a class="nav-link coolButton" id="button5" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
+                        </li>
+                        <li class="nav-item down-nav-item">
                             <form class="nav-link" method="post" asp-action="Logout" asp-controller="Account">
-                                <button type="submit" class="coolButton" id="button5">
+                                <button type="submit" class="coolerButtonNoBorder">
                                     Logout
                                 </button>
                             </form>
                         </li>
 
-                        <li class="nav-item down-nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
-                        </li>
                     }
                     else
                     {
@@ -100,8 +100,8 @@
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @BodyContent
-                @RenderBody()
-            
+            @RenderBody()
+
         </main>
     </div>
 
@@ -193,6 +193,7 @@
     <script src="/https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="/js/google-map.js"></script>
     <script src="/js/main.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

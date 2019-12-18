@@ -26,7 +26,6 @@ namespace MvcMovie.Models
         public virtual ICollection<Dinner> Dinners { get; set; }
         public virtual ICollection<Sponsor> Sponsors { get; set; }
         public virtual ApplicationUser User { get; set; }
-
         public virtual ICollection<ConferenceUser> Attendants { get; set; }
     }
 }
