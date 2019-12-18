@@ -49,6 +49,22 @@ namespace MvcMovie.Controllers
 
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             var partyUser = await _context.PartyUser.FindAsync(currentUser.Id, party.Id);
+            var averageRating = 0;
+            var totalRatings = 0;
+            foreach (var attendant in party.Attendants)
+            {
+                if (attendant.Rating != null)
+                {
+                    averageRating += attendant.Rating.Value;
+                    totalRatings += 1;
+                }
+            }
+            if (totalRatings > 0)
+            {
+                averageRating = averageRating / totalRatings;
+            }
+
+            ViewData["averageRating"] = averageRating;
             ViewData["partyUser"] = partyUser;
             ViewData["currentUser"] = currentUser;
 
@@ -201,6 +217,31 @@ namespace MvcMovie.Controllers
 
             _context.PartyUser.Remove(partyUser);
             await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        public IActionResult giveRating(int id)
+        {
+            ViewData["PartyId"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> giveRating(int id, [Bind("Rating")] PartyUser partyUser)
+        {
+            var party = await _context.Party.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (party == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var attendant = await _context.PartyUser.FindAsync(currentUser.Id, party.Id);
+            attendant.Rating = partyUser.Rating;
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Details", new { id = id });
         }
 

@@ -7,60 +7,66 @@
         <h1>Details</h1>
     
         <div>
-            <h4>Party</h4>
-            <hr />
-            <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Conference)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Conference.Name)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Room)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Room.Location)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Room.Capacity)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Room.Capacity)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.EventDate)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.EventDate)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.EndEventDate)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.EndEventDate)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Track)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Track)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Attendants)
-                </dt>
-                <dd class="col-sm-10">
-                    @{
-                        foreach (var attendant in Model.Attendants)
-                        {
-                            <text>
-                                <p> @attendant.User.Name @attendant.User.Lastname</p>
-                                <br />
-                            </text>
-                        }
+            <div class="row">
+                <div class="col-10">
+                    <h4>Party</h4>
+                </div>
+                <div class="col-2">
+                    <h4> Rating Promedio: @ViewBag.averageRating</h4>
+                </div>
+            </div>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Conference)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Conference.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Room)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Room.Location)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Room.Capacity)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Room.Capacity)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EventDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EventDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EndEventDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EndEventDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Track)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Track)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Attendants)
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    foreach (var attendant in Model.Attendants)
+                    {
+                        <text>
+                            <p> @attendant.User.Name @attendant.User.Lastname</p>
+                            <br />
+                        </text>
                     }
-                </dd>
-            </dl>
+                }
+            </dd>
+        </dl>
         </div>
 
         <div>
@@ -72,6 +78,15 @@
                             Unsubscribe
                         </button>
                     </form>
+                    if ((ViewBag.partyUser.Rating == null) && (DateTime.Now >= @Model.EndEventDate))
+                {
+                    <form method="get" asp-action="giveRating" asp-route-id="@Model.Id">
+                    <button type="submit" class="coolButton" id="button5">
+                        Give Rating
+                    </button>
+                    </form>
+
+                }
                 }
                 else if (@Model.Attendants.Count < @Model.Room.Capacity)
                 {

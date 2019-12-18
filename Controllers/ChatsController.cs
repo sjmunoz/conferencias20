@@ -49,6 +49,22 @@ namespace MvcMovie.Controllers
 
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             var chatUser = await _context.ChatUser.FindAsync(currentUser.Id, chat.Id);
+            var averageRating = 0;
+            var totalRatings = 0;
+            foreach (var attendant in chat.Attendants)
+            {
+                if (attendant.Rating != null)
+                {
+                    averageRating += attendant.Rating.Value;
+                    totalRatings += 1;
+                }
+            }
+            if (totalRatings > 0)
+            {
+                averageRating = averageRating / totalRatings;
+            }
+
+            ViewData["averageRating"] = averageRating;
             ViewData["chatUser"] = chatUser;
             ViewData["currentUser"] = currentUser;
 
@@ -201,6 +217,31 @@ namespace MvcMovie.Controllers
 
             _context.ChatUser.Remove(chatUser);
             await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        public IActionResult giveRating(int id)
+        {
+            ViewData["ChatId"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> giveRating(int id, [Bind("Rating")] ChatUser chatUser)
+        {
+            var chat = await _context.Chat.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (chat == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var attendant = await _context.ChatUser.FindAsync(currentUser.Id, chat.Id);
+            attendant.Rating = chatUser.Rating;
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Details", new { id = id });
         }
 

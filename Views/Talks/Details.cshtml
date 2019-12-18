@@ -7,11 +7,14 @@
     <h1>Details</h1>
 
     <div>
-        <h4>Talk</h4>
-        <hr />
-        <div class="col-2">
-            <h4> Rating Promedio: @ViewBag.averageRating</h4>
-        </div>
+        <div class="row">
+                <div class="col-10">
+                    <h4>Talk</h4>
+                </div>
+                <div class="col-2">
+                    <h4> Rating Promedio: @ViewBag.averageRating</h4>
+                </div>
+            </div>
         <dl class="row">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Conference)
@@ -86,11 +89,16 @@
                         Unsubscribe
                     </button>
                 </form>
-                <form method="get" asp-action="giveRating" asp-route-id="@Model.Id">
+                if ((ViewBag.talkUser.Rating == null) && (DateTime.Now >= @Model.EndEventDate))
+                {
+                    <form method="get" asp-action="giveRating" asp-route-id="@Model.Id">
                     <button type="submit" class="coolButton" id="button5">
                         Give Rating
                     </button>
-                </form>
+                    </form>
+
+                }
+      
             }
             else if (@Model.Attendants.Count < @Model.Room.Capacity)
             {

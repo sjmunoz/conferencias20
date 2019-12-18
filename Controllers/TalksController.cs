@@ -51,11 +51,19 @@ namespace MvcMovie.Controllers
             var talkUser = await _context.TalkUser.FindAsync(currentUser.Id, talk.Id);
 
             var averageRating = 0;
+            var totalRatings = 0;
             foreach (var attendant in talk.Attendants)
             {
-                averageRating += attendant.Rating.Value;
+                if (attendant.Rating != null)
+                {
+                    averageRating += attendant.Rating.Value;
+                    totalRatings += 1;
+                }
             }
-            averageRating = averageRating / talk.Attendants.Count;
+            if (totalRatings > 0)
+            {
+                averageRating = averageRating / totalRatings;
+            }
 
             ViewData["talkUser"] = talkUser;
             ViewData["currentUser"] = currentUser;

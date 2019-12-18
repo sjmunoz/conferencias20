@@ -49,6 +49,23 @@ namespace MvcMovie.Controllers
 
             ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
             var dinnerUser = await _context.DinnerUser.FindAsync(currentUser.Id, dinner.Id);
+
+            var averageRating = 0;
+            var totalRatings = 0;
+            foreach (var attendant in dinner.Attendants)
+            {
+                if (attendant.Rating != null)
+                {
+                    averageRating += attendant.Rating.Value;
+                    totalRatings += 1;
+                }
+            }
+            if (totalRatings > 0)
+            {
+                averageRating = averageRating / totalRatings;
+            }
+
+            ViewData["averageRating"] = averageRating;
             ViewData["dinnerUser"] = dinnerUser;
             ViewData["currentUser"] = currentUser;
 
@@ -201,6 +218,31 @@ namespace MvcMovie.Controllers
 
             _context.DinnerUser.Remove(dinnerUser);
             await _context.SaveChangesAsync();
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        public IActionResult giveRating(int id)
+        {
+            ViewData["DinnerId"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> giveRating(int id, [Bind("Rating")] DinnerUser dinnerUser)
+        {
+            var dinner = await _context.Dinner.FirstOrDefaultAsync(m => m.Id == id);
+            ApplicationUser currentUser = await _context.User.FirstOrDefaultAsync(i => i.UserName == @User.Identity.Name);
+
+            if (dinner == null || currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var attendant = await _context.DinnerUser.FindAsync(currentUser.Id, dinner.Id);
+            attendant.Rating = dinnerUser.Rating;
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Details", new { id = id });
         }
 
