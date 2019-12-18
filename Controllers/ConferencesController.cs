@@ -58,27 +58,87 @@ namespace MvcMovie.Controllers
             }
 
             var partyAttendants = 0;
+            var partyRatingTotal = 0;
+            var partyRatingNumber = 0;
             foreach (var party in conference.Parties)
             {
                 partyAttendants += party.Attendants.Count;
+                foreach (var attendant in party.Attendants)
+                {
+                    if (attendant.Rating != null)
+                    {
+                        partyRatingTotal += attendant.Rating.Value;
+                        partyRatingNumber += 1;
+                    }
+                }
+            }
+
+            if (partyRatingNumber > 0)
+            {
+                partyRatingTotal = partyRatingTotal / partyRatingNumber;
             }
 
             var dinnerAttendants = 0;
+            var dinnerRatingTotal = 0;
+            var dinnerRatingNumber = 0;
             foreach (var dinner in conference.Dinners)
             {
                 dinnerAttendants += dinner.Attendants.Count;
+                foreach (var attendant in dinner.Attendants)
+                {
+                    if (attendant.Rating != null)
+                    {
+                        dinnerRatingTotal += attendant.Rating.Value;
+                        dinnerRatingNumber += 1;
+                    }
+                }
+            }
+
+            if (dinnerRatingNumber > 0)
+            {
+                dinnerRatingTotal = dinnerRatingTotal / dinnerRatingNumber;
             }
 
             var talkAttendants = 0;
+            var talkRatingTotal = 0;
+            var talkRatingNumber = 0;
             foreach (var talk in conference.Talks)
             {
                 talkAttendants += talk.Attendants.Count;
+                foreach (var attendant in talk.Attendants)
+                {
+                    if (attendant.Rating != null)
+                    {
+                        talkRatingTotal += attendant.Rating.Value;
+                        talkRatingNumber += 1;
+                    }
+                }
+            }
+
+            if (talkRatingNumber > 0)
+            {
+                talkRatingTotal = talkRatingTotal / talkRatingNumber;
             }
 
             var chatAttendants = 0;
+            var chatRatingTotal = 0;
+            var chatRatingNumber = 0;
             foreach (var chat in conference.Chats)
             {
                 chatAttendants += chat.Attendants.Count;
+                foreach (var attendant in chat.Attendants)
+                {
+                    if (attendant.Rating != null)
+                    {
+                        chatRatingTotal += attendant.Rating.Value;
+                        chatRatingNumber += 1;
+                    }
+                }
+            }
+
+            if (chatRatingNumber > 0)
+            {
+                chatRatingTotal = chatRatingTotal / chatRatingNumber;
             }
 
             ViewData["partyAttendants"] = partyAttendants;
@@ -87,6 +147,10 @@ namespace MvcMovie.Controllers
             ViewData["chatAttendants"] = chatAttendants;
             ViewData["conferenceUser"] = conferenceUser;
             ViewData["currentUser"] = currentUser;
+            ViewData["chatRatingTotal"] = chatRatingTotal;
+            ViewData["dinnerRatingTotal"] = dinnerRatingTotal;
+            ViewData["talkRatingTotal"] = talkRatingTotal;
+            ViewData["partyRatingTotal"] = partyRatingTotal;
             ViewData["searchstring"] = "";
             if (searchstring != null) { ViewData["searchstring"] = searchstring; }
             return View(conference);

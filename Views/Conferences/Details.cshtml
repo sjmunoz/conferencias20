@@ -27,6 +27,21 @@
 
         var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         chart.draw(data, options);
+
+        var barData = google.visualization.arrayToDataTable([
+            ['Event', 'Rating'],
+            ['Parties', @ViewBag.partyRatingTotal],
+            ['Dinners', @ViewBag.dinnerRatingTotal],
+            ['Chats', @ViewBag.chatRatingTotal],
+            ['Talks', @ViewBag.talkRatingTotal],
+        ]);
+
+        var barOptions = {
+            title: 'Rating promedio por tipo de evento',
+        };
+
+        var barChart = new google.visualization.ColumnChart(document.getElementById('barchart'));
+        barChart.draw(barData, barOptions);
     }
 </script>
 
@@ -185,7 +200,6 @@
                 <tr>
                     <th>Event Track</th>
                     <th>Event Type</th>
-                    <th>Creator</th>
                 </tr>
                 @{
                     foreach (var party in Model.Parties)
@@ -198,9 +212,6 @@
                                 </td>
                                 <td>
                                     Party
-                                </td>
-                                <td>
-                                    @party.User.Name
                                 </td>
                             </tr>
                         }
@@ -217,9 +228,6 @@
                                 <td>
                                     Chat
                                 </td>
-                                <td>
-                                    @chat.User.Name
-                                </td>
                             </tr>
                         }
                     }
@@ -233,9 +241,6 @@
                                 </td>
                                 <td>
                                     Dinner
-                                </td>
-                                <td>
-                                    @dinner.User.Name
                                 </td>
                             </tr>
                         }
@@ -251,9 +256,6 @@
                                 </td>
                                 <td>
                                     Talk
-                                </td>
-                                <td>
-                                    @talk.User.Name
                                 </td>
                             </tr>
                         }
@@ -287,6 +289,12 @@
 
     </div>
     <br />
-    <h2>Métricas</h2>
-    <div id="donutchart" style="width: 900px; height: 500px;"></div>
-</div>
+    <div class="row">
+        <h2>Métricas</h2>
+        <div class="col-6">
+            <div id="donutchart" style="width: 700px; height: 400px;"></div>
+        </div>
+        <div class="col-6">
+            <div id="barchart" style="width: 700px; height: 400px;"></div>
+        </div>
+    </div>
